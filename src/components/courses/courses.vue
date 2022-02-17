@@ -13,7 +13,7 @@
            <div>
                <el-row :gutter="20">
                    <el-col :span="4">
-                    <el-select v-model="courseList.course_name" filterable placeholder="课程名选择">
+                    <el-select v-model="searchCourse" filterable placeholder="课程名">
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
@@ -23,7 +23,7 @@
                     </el-select>
                    </el-col>
                    <el-col :span="4">
-                    <el-select v-model="courseList.course_time" filterable placeholder="时间选择">
+                    <el-select v-model="searchCourse" filterable placeholder="课程时间">
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
@@ -32,8 +32,31 @@
                         </el-option>
                     </el-select>
                    </el-col>
+                    <el-col :span="4">
+                    <el-select v-model="searchCourse" filterable placeholder="星期">
+                        <el-option
+                            v-for="courses in courseList"
+                            :key="courses.id"
+                            :label="courses.course_week"
+                            :value="courses.id">
+                        </el-option>
+                    </el-select>
+                   </el-col>
+                   <el-col :span="4">
+                    <el-select v-model="searchCourse" filterable placeholder="实验室">
+                        <el-option
+                            v-for="courses in courseList"
+                            :key="courses.id"
+                            :label="courses.course_lab_id"
+                            :value="courses.id">
+                        </el-option>
+                    </el-select>
+                   </el-col>
                    <el-col :span="2">
                      <el-button type="primary">搜索</el-button>
+                   </el-col>
+                   <el-col :span="4">
+                     <el-button type="primary" @click="addCourseVisible = true">添加课程</el-button>
                    </el-col>
                </el-row>
            </div>
@@ -50,23 +73,20 @@
         <el-table-column
         prop="course_name"
         label="课程名"
-        width="180"
         align="center">
         </el-table-column>
         <el-table-column
         prop="course_time"
         label="课程时间"
-        width="180"
         align="center">
         </el-table-column>
         <el-table-column
         prop="course_week"
         label="星期"
-        width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="student_stu_id"
+        prop="course_lab_id"
         label="实验室"
         align="center">
         </el-table-column>
@@ -83,6 +103,64 @@
       :total="total">
     </el-pagination>
     </el-card>
+
+        <!-- 分配实验室弹窗 -->
+    <el-dialog
+        title="分配实验室"
+        :visible.sync="addCourseVisible"
+        width="50%"
+        >
+        <!-- 内容区域 -->
+            <el-row  style="margin-bottom:20px">
+                <el-col :span="12">
+                    <el-select v-model="addCourse" filterable placeholder="课程名" >
+                        <el-option
+                            v-for="courses in courseList"
+                            :key="courses.id"
+                            :label="courses.course_name"
+                            :value="courses.id">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="12">
+                    <el-select v-model="addCourse" filterable placeholder="课程时间">
+                        <el-option
+                            v-for="courses in courseList"
+                            :key="courses.id"
+                            :label="courses.course_time"
+                            :value="courses.id">
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+            <el-row >
+                <el-col :span="12">
+                    <el-select v-model="addCourse" filterable placeholder="实验室">
+                        <el-option
+                            v-for="courses in courseList"
+                            :key="courses.id"
+                            :label="courses.course_lab_id"
+                            :value="courses.id">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="12">
+                    <el-select v-model="addCourse" filterable placeholder="星期">
+                        <el-option
+                            v-for="courses in courseList"
+                            :key="courses.id"
+                            :label="courses.course_week"
+                            :value="courses.id">
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="addCourseVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addCourseVisible = false">确 定</el-button>
+    </span>
+    </el-dialog>
 </div>
 </template>
 
@@ -103,6 +181,7 @@ export default {
                 {
                 id:'1',
                 course_id: '001',
+                course_lab_id:'101',
                 course_name: '病理学',
                 course_time: '1-2节',
                 course_week:'周一'
@@ -110,14 +189,23 @@ export default {
             {
                 id:'12',
                 course_id: '002',
+                course_lab_id:'101',
                 course_name: '护理学',
                 course_time: '3-4节',
                 course_week:'周一'
             }
             ],
+            // 记录搜索条件
+            searchCourse:'',
+            // 保存添加课程信息
+            addCourse:'',
+            input:[{
+
+            }],
             // 当前数据总数
             total :2,
-
+            // 添加课程显示/隐藏
+            addCourseVisible : false
         }
     },
     methods:{
