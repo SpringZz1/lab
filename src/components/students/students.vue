@@ -16,10 +16,6 @@
                     </el-input>
                 </div>
             </el-col>
-            <!-- 新增教师按钮 -->
-            <!-- <el-col :span="4">
-                <el-button type="primary" @click="addTeacherVisible = true">新增教师</el-button>
-            </el-col> -->
         </el-row>
     </el-card>
 
@@ -99,15 +95,17 @@ export default {
             // 学生数据列表, 这里暂时使用假数据，后续从数据库获取渲染
             studentList:[
                 {
+                student_id:'001',
                 student_name: '大明',
-                student_phone: '136xxxxxx',
+                student_phone:'130xxxx',
                 student_stu_id: 'QSX3122',
                 student_open_id: 'dfw221',
                 student_nick_name: '薯条',
             },
             {
+                student_id:'002',
                 student_name: '大红',
-                student_phone: '139xxxxxx',
+                 student_phone:'159yyyy',
                 student_stu_id: 'QSX4123',
                 student_open_id: 'kof421',
                 student_nick_name: '汉堡',

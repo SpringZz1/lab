@@ -173,20 +173,24 @@ export default {
             // 教师数据列表, 这里暂时使用假数据，后续从数据库获取渲染
             teacherList:[
                 {
+                teacher_id:'001',
                 teacher_name: '小明',
                 teacehr_phone: '130xxxxxx',
                 teacher_work_id: 'QSZ1234',
                 teacher_open_id: 'abc123',
                 teacher_nick_name: '苹果',
                 teacher_status : true,
+                teacher_lab_id:'101'
             },
             {
+                teacher_id:'002',
                 teacher_name: '小红',
                 teacehr_phone: '159xxxxxx',
                 teacher_work_id: 'QSZ4321',
                 teacher_open_id: 'abc456',
                 teacher_nick_name: '香蕉',
                 teacher_status : false,
+                teacher_lab_id:'102'
             }
             ],
             // 当前数据总数
@@ -197,10 +201,10 @@ export default {
             // 实验室数据, 这里暂时使用假数据
             labList:[
                 {
-                lab_id:'123'
+                lab_id:'101'
             },
             {
-                lab_id:'321'
+                lab_id:'102'
             }]
         }
     },
