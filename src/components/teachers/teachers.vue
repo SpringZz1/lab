@@ -24,7 +24,7 @@
     </el-card>
 
     <!-- 渲染数据表格 -->
-    <el-card >
+    <el-card align="center">
      <el-table
     :data="teacherList"
     border
