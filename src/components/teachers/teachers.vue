@@ -24,7 +24,7 @@
     </el-card>
 
     <!-- 渲染数据表格 -->
-    <el-card align="center">
+    <el-card >
      <el-table
     :data="teacherList"
     border
@@ -102,13 +102,16 @@
         width="50%"
         >
         <!-- 内容区域 -->
-        <!-- <el-form-item label="活动区域">
-            <el-select v-model="form.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-        </el-form-item> -->
-            <el-table
+        <template>
+            <el-transfer
+            v-model="labValue"
+            :data="labList"
+            :titles="['可分配实验室','已分配实验室']"
+            class="labTransfer"
+            ></el-transfer>
+        </template>
+        <!-- 简易版switch -->
+            <!-- <el-table
                 :data="labList"
                  border
                  style="width: 100%">
@@ -133,7 +136,7 @@
                 </el-table-column>
 
 
-            </el-table>
+            </el-table> -->
 
             <!-- <el-table-column
                 prop="lab_id"
@@ -161,6 +164,17 @@
 <script>
 export default {
     data(){
+        // 穿梭栏添加实验室
+        const generateData = _ => {
+            const labList = [];
+            for (let i = 101; i <= 104; i++) {
+                 labList.push({
+                    key: i,
+                    label: `实验室 ${ i }`,
+                    });
+            }
+            return labList
+        };
         return{
 
             // query绑定搜索框
@@ -198,14 +212,16 @@ export default {
             // 添加教师界面显示/隐藏
             addLabVisible:false,
 
-            // 实验室数据, 这里暂时使用假数据
-            labList:[
-                {
-                lab_id:'101'
-            },
-            {
-                lab_id:'102'
-            }]
+            // 简易switch 实验室数据, 这里暂时使用假数据
+            // labList:[
+            //     {
+            //     lab_id:'101'
+            // },
+            // {
+            //     lab_id:'102'
+            // }],
+            labList: generateData(),
+            labValue: [101]
         }
     },
     methods:{
@@ -243,6 +259,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style scope="scoped">
+@import '/styles/teacher.css'
 </style>

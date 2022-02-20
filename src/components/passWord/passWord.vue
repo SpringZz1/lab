@@ -1,4 +1,5 @@
 <template>
+<el-card>
 <div>
     <p style="font-size:20px">修改密码</p>
         <el-form :model="passWordForm" :rules="passWordFormRul" ref="passWordFormRel" label-width="auto" class="password_box">
@@ -14,6 +15,7 @@
             <el-button class="btn" type="primary" @click="change">确认</el-button>
         </el-form>
 </div>
+</el-card>
 </template>
 
 <script>
