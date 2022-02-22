@@ -24,8 +24,8 @@ export default {
         //表单请求数据
         return{
         passWordForm:{
-            userName:'admin',
-            passWord:'123'
+            oldPassWord:'321',
+            passWord:''
         },
         //表单验证规则
         passWordFormRul:{
