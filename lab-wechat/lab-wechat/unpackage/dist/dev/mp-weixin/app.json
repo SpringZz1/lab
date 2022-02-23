@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/teacher/checkOut",
+    "pages/teacher/detail",
+    "pages/teacher/labInfo",
+    "pages/index/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}

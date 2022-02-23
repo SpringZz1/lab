@@ -1,0 +1,41 @@
+{
+	"pages": [
+		// 验收检查界面
+		{
+			"path":"pages/teacher/checkOut",
+			"style":{
+				"navigationBarTitleText":"验收检查"
+			}
+		},
+		{
+			// 查看详情界面
+			"path":"pages/teacher/detail",
+			"style":{
+				"navigationBarTitleText":"查看详情"
+			}
+		},
+		// 教师登录成功界面
+		{
+			"path":"pages/teacher/labInfo",
+			"style":{
+				"navigationBarTitleText":"查看所负责的实验室"
+			}
+		},
+	
+		// 创建项目系统自带index
+		{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "uni-app"
+		}
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"background": "#efeff4"
+		}
+	}
+}
