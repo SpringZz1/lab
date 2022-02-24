@@ -6,7 +6,6 @@
 			<p>课程: {{course.course_name}}</p>
 			<uni-tag text="查看详情" type="primary" style="float: right;" size="normal"></uni-tag>
 			<p>时间: {{course.courese_week}},{{course.course_time}}</p>
-			
 		</uni-card>
 		
 	</view>
@@ -39,7 +38,8 @@
 				goDetail(){
 					// 跳转到查看详情页面，此处暂时写死
 					uni.navigateTo({
-						url:'./detail'
+						// url:'./detail'
+						url:'../index/index'
 					})
 				}
 			}

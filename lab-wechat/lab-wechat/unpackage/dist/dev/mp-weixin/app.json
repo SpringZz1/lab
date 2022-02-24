@@ -1,8 +1,9 @@
 {
   "pages": [
+    "pages/teacher/register",
     "pages/teacher/checkOut",
-    "pages/teacher/detail",
     "pages/teacher/labInfo",
+    "pages/teacher/detail",
     "pages/index/index"
   ],
   "subPackages": [],

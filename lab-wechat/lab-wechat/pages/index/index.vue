@@ -1,19 +1,15 @@
 <template>
-	<view class="container">
-		
-<!-- 		<view class="intro">本项目已包含uni ui组件，无需import和注册，可直接使用。在代码区键入字母u，即可通过代码助手列出所有可用组件。光标置于组件名称处按F1，即可查看组件文档。</view>
-		<text class="intro">详见：</text>
-		<uni-link :href="href" :text="href"></uni-link> -->
-		<uni-grid :column="3">
-			<uni-grid-item>
-				<text class="text">文本</text>
-			</uni-grid-item>
-			<uni-grid-item>
-				<text class="text">文本</text>
-			</uni-grid-item>
-
-		</uni-grid>
-	</view>
+	<!-- 标题卡片模式 -->
+	<uni-card 
+		title="Dcloud" 
+		mode="title" 
+		:is-shadow="true" 
+		thumbnail="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/460d46d0-4fcc-11eb-8ff1-d5dcf8779628.png" 
+		extra="技术没有上限" 
+		note="Tips"
+	>
+		uni-app 是一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可编译到iOS、Android、H5、以及各种小程序等多个平台。即使不跨端，uni-app同时也是更好的小程序开发框架。
+	</uni-card>
 </template>
 
 <script>

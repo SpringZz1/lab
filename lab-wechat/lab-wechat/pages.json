@@ -1,17 +1,17 @@
 {
 	"pages": [
+		// 教师注册界面
+		{
+			"path":"pages/teacher/register",
+			"style":{
+				"navigationBarTitleText":"注册"
+			}
+		},
 		// 验收检查界面
 		{
 			"path":"pages/teacher/checkOut",
 			"style":{
 				"navigationBarTitleText":"验收检查"
-			}
-		},
-		{
-			// 查看详情界面
-			"path":"pages/teacher/detail",
-			"style":{
-				"navigationBarTitleText":"查看详情"
 			}
 		},
 		// 教师登录成功界面
@@ -21,7 +21,14 @@
 				"navigationBarTitleText":"查看所负责的实验室"
 			}
 		},
-	
+		// 查看详情界面
+		{
+			"path":"pages/teacher/detail",
+			"style":{
+				"navigationBarTitleText":"查看详情"
+			}
+		},
+		
 		// 创建项目系统自带index
 		{
 		"path": "pages/index/index",
