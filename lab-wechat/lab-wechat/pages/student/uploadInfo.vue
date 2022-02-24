@@ -16,11 +16,13 @@
 			<uni-forms-item label="班级" name="class_name">
 				<uni-easyinput type="text" v-model="formData.class_name" placeholder="请输入班级" />
 			</uni-forms-item>
-			<div class="btn">
-			<uni-icons type="camera" size="80"></uni-icons>
+			<div class="uploadImg">
+			<!-- <uni-icons type="camera" size="80" style="padding: 16%;"></uni-icons> -->
 			</div>
-			<button type="default" size="mini" style="width: 40%; margin-right: 15%" >返回</button>
-			<button type="primary" size="mini" style="width: 40%;">确认</button>
+			<div class="btn">
+				<button type="default" size="mini" style="margin-right: 15%; ">返回</button>
+				<button type="primary" size="mini" >确认</button>
+			</div>
 		</uni-forms>
 		
 	</view>
@@ -68,12 +70,16 @@
 </script>
 
 <style>
-	.btn{
-		border: 1px solid gray;
+	.uploadImg{
+		border: 1px dotted gray;
 		height: 120px;
-		width: 120px;
-		border-radius: 60px;
+		width: 100px;
 		margin-left: 40%;
 		margin: 0 auto;
+	}
+	.btn{
+		width: 200%;
+		margin-top: 5%;
+		margin-left: 20%;
 	}
 </style>

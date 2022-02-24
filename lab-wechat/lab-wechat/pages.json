@@ -1,5 +1,33 @@
 {
 	"pages": [
+		// 教师登录成功界面
+		{
+			"path":"pages/teacher/labInfo",
+			"style":{
+				"navigationBarTitleText":"查看所负责的实验室"
+			}
+		},
+		// 学生查看反馈
+		{
+			"path":"pages/student/viewFeedback",
+			"style":{
+				"navigationBarTitleText":"查看反馈"
+			}
+		},
+		// 学生扫码拍照页面
+		{
+			"path":"pages/student/uploadInfo",
+			"style":{
+				"navigationBarTitleText":"扫码拍照"
+			}
+		},
+		//学生查看课程信息界面
+		{
+			"path":"pages/student/labInfo",
+			"style":{
+				"navigationBarTitleText":"查看实验台信息"
+			}
+		},
 		// 教师注册界面
 		{
 			"path":"pages/teacher/register",
@@ -12,13 +40,6 @@
 			"path":"pages/teacher/checkOut",
 			"style":{
 				"navigationBarTitleText":"验收检查"
-			}
-		},
-		// 教师登录成功界面
-		{
-			"path":"pages/teacher/labInfo",
-			"style":{
-				"navigationBarTitleText":"查看所负责的实验室"
 			}
 		},
 		// 查看详情界面

@@ -8,9 +8,10 @@
 <!-- 	<view class="btn">
 		<uni-tag text="提交" @click="bindClick"></uni-tag>
 	</view> -->
-	<div></div>
-	<uni-tag text="标签"></uni-tag>
-	<uni-tag text="标签"></uni-tag>
+	<div style="margin-top: 2%;">
+		<uni-tag text="返回" type="primary" style="float: left; margin-left: 20%;"></uni-tag>
+		<uni-tag text="确认" type="success" style="float: right; margin-right: 20%;"></uni-tag>
+	</div>
 	</view>
 </template>
 
