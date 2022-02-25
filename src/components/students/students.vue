@@ -1,7 +1,7 @@
 <template>
 <div>
 <!-- 面包屑导航 -->
-    <el-breadcrumb separator="/"style="margin-bottom:15px">
+    <el-breadcrumb separator="/" style="margin-bottom:15px">
     <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>学生信息</el-breadcrumb-item>
     </el-breadcrumb>
@@ -26,31 +26,25 @@
     border
     style="width: 100%">
         <el-table-column
-        prop="student_name"
+        prop="name"
         label="姓名"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="student_phone"
-        label="电话号码"
-        width="180"
-        align="center">
-        </el-table-column>
-        <el-table-column
-        prop="student_open_id"
+        prop="open_id"
         label="微信号"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="student_stu_id"
+        prop="stu_id"
         label="学号"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="student_nick_name"
-        label="昵称"
+        prop="class_name"
+        label="班级"
         align="center">
         </el-table-column>
         <el-table-column
@@ -95,20 +89,28 @@ export default {
             // 学生数据列表, 这里暂时使用假数据，后续从数据库获取渲染
             studentList:[
                 {
-                student_id:'001',
-                student_name: '大明',
-                student_phone:'130xxxx',
-                student_stu_id: 'QSX3122',
-                student_open_id: 'dfw221',
-                student_nick_name: '薯条',
+                // 学生信息
+                id:'001',
+                // 学生姓名
+                name: '大明',
+                // 学生学号
+                stu_id: 'QSX3122',
+                // 学生微信号码
+                open_id: 'dfw221',
+                // 学生班级
+                class_name:'向日葵一班'
             },
             {
-                student_id:'002',
-                student_name: '大红',
-                 student_phone:'159yyyy',
-                student_stu_id: 'QSX4123',
-                student_open_id: 'kof421',
-                student_nick_name: '汉堡',
+            // 学生信息
+            id:'0012',
+            // 学生姓名
+            name: '大红',
+            // 学生学号
+            stu_id: 'QSX313',
+            // 学生微信号码
+            open_id: 'avc221',
+            // 学生班级
+            class_name:'红玫瑰一班'
             }
             ],
             // 当前数据总数
@@ -119,7 +121,7 @@ export default {
     methods:{
         // 查询学生信息
         getStudentList(){
-            // this.$http.get('teachers',{params:this.queryInfo})
+            // this.$http.get('student',{params:this.queryInfo})
             // .then(res=>{
             //     console.log(res);
             //     if(res.data.meta.status!==200)return this.$message.error('请求教师列表失败');

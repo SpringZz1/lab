@@ -51,8 +51,8 @@
         </el-menu>
 
 </el-aside>
-
         <el-main>
+
             <router-view></router-view>
         </el-main>
 </el-container>
@@ -72,6 +72,6 @@ export default {
 </script>
 
 <style scoped="scoped">
-@import 'D:/Code/Program/lab-v0.0/src/styles/home.css';
+@import 'D:/Code/lab/src/styles/home.css';
 
 </style>

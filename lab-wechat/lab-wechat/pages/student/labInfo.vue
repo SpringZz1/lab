@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<uni-card v-for="bench in benchList" is-full="true" :title="bench.lab_id" >
+		<uni-card v-for="bench in benchList" is-full="false" :title="bench.lab_id" >
 			<div>
 				<p>课程: {{bench.name}}</p>
 				<p>时间: {{bench.week}},{{bench.time}}</p>

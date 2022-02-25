@@ -13,24 +13,24 @@
     border
     style="width: 100%">
         <el-table-column
-        prop="lab_id"
+        prop="id"
         label="实验室"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="teacehr_phone"
+        prop="name"
         label="负责教师"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="lab_comment"
+        prop="comment"
         label="简介"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="lab_bench_nums"
+        prop="bench_nums"
         label="实验台数量"
         align="center">
         </el-table-column>
@@ -64,20 +64,37 @@ export default {
             // 实验室数据列表, 这里暂时使用假数据，后续从数据库获取渲染
             labList:[
                 {
+                // 主键
                 id:'1',
+                // 实验室号
                 lab_id:'001',
-                lab_bench_nums: '16',
-                lab_bench_id:['001','002'],
-                lab_cou_id:'1',
-                lab_comment:'001实验室坐落于xxx'
+                // 负责教师姓名
+                name:'小明',
+                // 实验台数量
+                bench_nums: '16',
+                // 实验桌数量
+                bench_id:['001','002'],
+                // 课程id
+                cou_id:'1',
+                // 实验室简介
+                comment:'001实验室坐落于xxx',
+
             },
             {
-                 id:'21',
-                lab_id:'0021',
-                lab_bench_nums: '15',
-                lab_bench_id:['001','002'],
-                lab_cou_id:'2',
-                lab_comment:'002实验室坐落于xxx'
+                // 主键
+                id:'2',
+                // 实验室号
+                lab_id:'002',
+                // 负责教师姓名
+                name:'小红',
+                // 实验台数量
+                bench_nums: '14',
+                // 实验桌数量
+                bench_id:['001','002'],
+                // 课程id
+                cou_id:'2',
+                // 实验室简介
+                comment:'002实验室坐落于xyy'
             }
             ],
             // 当前数据总数

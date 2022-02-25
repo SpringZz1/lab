@@ -17,6 +17,23 @@
 			</div>
 		</div>
 	</div> -->
+	<view>
+		<uni-card  is-full="true">
+			<div class= "imagePart">
+				<image src="../../static/c1.png" mode=""></image>
+			</div>
+			<div class="infoDetail">
+				<p>实验室号: {{infoList.lab_id}}</p>
+				<p>实验台号: {{infoList.id}}</p>
+				<p>课程名: {{infoList.name}}</p>
+				<p>上课时间: {{infoList.week}} {{infoList.course_iime}}</p>
+				<p>教师反馈: {{infoList.feedback}}</p>
+			</div>
+			<div class="btn">
+				<button type="primary">确认</button>
+			</div>
+		</uni-card>
+	</view>
 </template>
 
 <script>
@@ -51,5 +68,9 @@
 		width: 100%;
 		border: 1px solid red;
 		/* background-color: red; */
+	}
+	.infoDetail{}
+	.btn{
+		text-align: center;
 	}
 </style>

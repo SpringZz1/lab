@@ -1,7 +1,7 @@
 <template>
 <div>
 <!-- 面包屑导航 -->
-    <el-breadcrumb separator="/"style="margin-bottom:15px">
+    <el-breadcrumb separator="/" style="margin-bottom:15px">
     <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>课程信息</el-breadcrumb-item>
     </el-breadcrumb>
@@ -17,7 +17,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_name"
+                            :label="courses.name"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -37,7 +37,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_week"
+                            :label="courses.week"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -47,7 +47,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_lab_id"
+                            :label="courses.lab_id"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -71,7 +71,7 @@
     border
     style="width: 100%">
         <el-table-column
-        prop="course_name"
+        prop="name"
         label="课程名"
         align="center">
         </el-table-column>
@@ -81,12 +81,12 @@
         align="center">
         </el-table-column>
         <el-table-column
-        prop="course_week"
+        prop="cweek"
         label="星期"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="course_lab_id"
+        prop="lab_id"
         label="实验室"
         align="center">
         </el-table-column>
@@ -117,7 +117,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_name"
+                            :label="courses.name"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -139,7 +139,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_lab_id"
+                            :label="courses.lab_id"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -149,7 +149,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_week"
+                            :label="courses.week"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -176,23 +176,31 @@ export default {
                 pageNum:'1',
                 pageSize:'2'
             },
-            // 学生数据列表, 这里暂时使用假数据，后续从数据库获取渲染
+            // 课程数据列表, 这里暂时使用假数据，后续从数据库获取渲染
             courseList:[
                 {
+                // 课程主键
                 id:'1',
-                course_id: '001',
-                course_lab_id:'101',
-                course_name: '病理学',
+                // 课程所在的实验室编号
+                lab_id:'101',
+                // 课程名
+                name: '病理学',
+                // 课程时间
                 course_time: '1-2节',
-                course_week:'周一'
+                // 课程星期
+                week:'周一'
             },
             {
-                id:'12',
-                course_id: '002',
-                course_lab_id:'101',
-                course_name: '护理学',
+               // 课程主键
+                id:'11',
+                // 课程所在的实验室编号
+                lab_id:'103',
+                // 课程名
+                name: '护理学',
+                // 课程时间
                 course_time: '3-4节',
-                course_week:'周一'
+                // 课程星期
+                week:'周一'
             }
             ],
             // 记录搜索条件

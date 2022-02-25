@@ -30,37 +30,32 @@
     border
     style="width: 100%">
         <el-table-column
-        prop="teacher_name"
+        prop="name"
         label="教师姓名"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="teacehr_phone"
+        prop="phone"
         label="电话号码"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="teacher_work_id"
+        prop="work_id"
         label="工号"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="teacher_nick_name"
-        label="昵称"
-        align="center">
-        </el-table-column>
-        <el-table-column
-        prop="teacher_status"
+        prop="status"
         label="审核状态"
         align="center">
         <template slot-scope="scoped">
         <el-switch
-            v-model="scoped.row.teacher_status"
+            v-model="scoped.row.status"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            @change="changeStatus(scoped.row.teacher_work_id,$event)">
+            @change="changeStatus(scoped.row.work_id,$event)">
         </el-switch>
         </template>
         </el-table-column>
@@ -68,13 +63,13 @@
         prop=""
         label="操作"
         align="center">
-        <template>
+        <template slot-scope="scope">
             <el-row>
                     <el-tooltip class="item" effect="dark" content="修改信息" placement="top">
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="updateVisible=true"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="editTeacher(scope.row)"></el-button>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTeacher(scope.row)"></el-button>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="分配实验室" placement="top">
                         <el-button type="warning" icon="el-icon-setting" size="mini" @click="addLabVisible=true"></el-button>
@@ -151,7 +146,7 @@
                     </el-switch>
                 </template>
             </el-table-column> -->
-         </el-table>
+         <!-- </el-table> -->
 
         <span slot="footer" class="dialog-footer">
         <el-button @click="addLabVisible = false">取 消</el-button>
@@ -169,7 +164,7 @@
         <template>
             <span>修改教师信息界面，修改什么内容尚待讨论</span>
         </template>
-         </el-table>
+
 
         <span slot="footer" class="dialog-footer">
         <el-button @click="updateVisible = false">取 消</el-button>
@@ -205,24 +200,29 @@ export default {
             // 教师数据列表, 这里暂时使用假数据，后续从数据库获取渲染
             teacherList:[
                 {
-                teacher_id:'001',
-                teacher_name: '小明',
-                teacehr_phone: '130xxxxxx',
-                teacher_work_id: 'QSZ1234',
-                teacher_open_id: 'abc123',
-                teacher_nick_name: '苹果',
-                teacher_status : true,
-                teacher_lab_id:'101'
+                // 教师id
+                id:'001',
+                // 教师姓名
+                name: '小明',
+                // 教师电话
+                phone: '130xxxxxx',
+                // 教师工号
+                work_id: 'QSZ1234',
+                // 教师微信号
+                open_id: 'abc123',
+                // 审核状态
+                status : true,
+                // 管理的实验室
+                lab_id:'101'
             },
             {
-                teacher_id:'002',
-                teacher_name: '小红',
-                teacehr_phone: '159xxxxxx',
-                teacher_work_id: 'QSZ4321',
-                teacher_open_id: 'abc456',
-                teacher_nick_name: '香蕉',
-                teacher_status : false,
-                teacher_lab_id:'102'
+                id:'002',
+                name: '小红',
+                phone: '159xxxxxx',
+                work_id: 'QSZ4321',
+                open_id: 'abc456',
+                status : false,
+                lab_id:'102'
             }
             ],
             // 当前数据总数
@@ -241,13 +241,19 @@ export default {
             //     lab_id:'102'
             // }],
             labList: generateData(),
-            labValue: [101]
+            labValue: [101],
+            // 存储获取到的教师信息
+            editTeacherParams:{
+                // 目前只修改老师的电话
+                phone: '',
+
+            }
         }
     },
     methods:{
         // 查询教师信息
         getTeacherList(){
-            // this.$http.get('teachers',{params:this.queryInfo})
+            // this.$http.get(`teachers`,{params:this.queryInfo})
             // .then(res=>{
             //     console.log(res);
             //     if(res.data.meta.status!==200)return this.$message.error('请求教师列表失败');
@@ -273,6 +279,41 @@ export default {
         changeStatus(status){
             // 当前switch状态 boolean
             // this.getTeacherList();
+        },
+        // 删除教师
+        deleteTeacher(row){
+            this.$confirm('此操作将永久删除该教师信息， 是否继续？','提示',{
+                confirmButtonText: '确认',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(()=>{
+                // 点击确认后，向后台发送请求，删除教师
+                // this.$http.delete(`teachers/$(row.id)`).then(res=>(
+                    // console.log(res)
+                    // if(res.data.data.meta!==200) return this.$message.error('删除教师失败')
+                // ))
+                this.$message({
+                    type: 'success',
+                    message:'删除成功!'
+                });
+                // 刷新列表
+                this.getTeacherList();
+            }).catch(()=>{
+                this.$message({
+                    type: 'info',
+                    message:'已取消删除'
+                })
+            });
+        },
+        // 修改教师信息
+        editTeacher(row){
+            // 根据教师信息获取当前教师信息
+            this.$http.get(`teacher/$(row.id)`).then(res=>{
+                console.log(res);
+            // 存储获得到教师信息
+            this.editTeacherParams.phone =res.data.data.phone;
+            console.log(this.editTeacher);
+            })
         }
 
     }

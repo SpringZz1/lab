@@ -62,6 +62,6 @@
 
 <style scoped="scoped">
 /* 引入外部css，这里相对路径还没找到，暂时使用绝对路径 */
-@import 'D:/Code/Program/lab-v0.0/src/styles/login.css';
+@import 'D:/Code/lab/src/styles/login.css';
 
 </style>
