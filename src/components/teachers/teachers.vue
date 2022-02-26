@@ -11,9 +11,10 @@
         <el-row :gutter="15">
             <el-col :span="8">
                 <div>
-                    <el-input placeholder="请输入想要查询的教师工号" v-model="queryInfo.query" class="input-with-select" clearable @clear="getTeacherList">
-                    <el-button slot="append" icon="el-icon-search" @click="getTeacherList"></el-button>
+                    <el-input placeholder="请输入想要查询的教师工号" v-model="searchTeacher" class="input-with-select" @click="getTeacherList" clearable @clear="getTeacherList">
+                    <el-button slot="append" icon="el-icon-search" ></el-button>
                     </el-input>
+                    <button style="width:100px;" @click="getTeacherList"></button>
                 </div>
             </el-col>
             <!-- 新增教师按钮 -->
@@ -26,7 +27,7 @@
     <!-- 渲染数据表格 -->
     <el-card align="center">
      <el-table
-    :data="teacherList"
+    :data="list"
     border
     style="width: 100%">
         <el-table-column
@@ -42,7 +43,7 @@
         align="center">
         </el-table-column>
         <el-table-column
-        prop="work_id"
+        prop="workId"
         label="工号"
         align="center">
         </el-table-column>
@@ -55,7 +56,7 @@
             v-model="scoped.row.status"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            @change="changeStatus(scoped.row.work_id,$event)">
+            @change="changeStatus(scoped.row.workId,$event)">
         </el-switch>
         </template>
         </el-table-column>
@@ -79,7 +80,7 @@
         </el-table-column>
     </el-table>
     <!-- 分页功能 -->
-    <el-pagination
+    <!-- <el-pagination
       @size-change="SizeChange"
       @current-change="CurrentChange"
       :current-page="1"
@@ -87,7 +88,7 @@
       :page-size="2"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
-    </el-pagination>
+    </el-pagination> -->
     </el-card>
 
     <!-- 分配实验室弹窗 -->
@@ -192,46 +193,41 @@ export default {
 
             // query绑定搜索框
             // 请求教师信息参数
-            queryInfo:{
-                query:'',
-                pageNum:'1',
-                pageSize:'2'
-            },
+            // queryInfo:{
+            //     query:'',
+            //     pageNum:'1',
+            //     pageSize:'2'
+            // },
             // 教师数据列表, 这里暂时使用假数据，后续从数据库获取渲染
-            teacherList:[
-                {
+            list:
+                [{
                 // 教师id
-                id:'001',
+                id:'1',
                 // 教师姓名
-                name: '小明',
+                name: '12',
                 // 教师电话
-                phone: '130xxxxxx',
+                phone: '312',
                 // 教师工号
-                work_id: 'QSZ1234',
-                // 教师微信号
-                open_id: 'abc123',
+                workId: '32',
+                // 教师open_id,等价于教师微信号
+                openId: '32',
                 // 审核状态
-                status : true,
+                status : '32',
                 // 管理的实验室
-                lab_id:'101'
-            },
-            {
-                id:'002',
-                name: '小红',
-                phone: '159xxxxxx',
-                work_id: 'QSZ4321',
-                open_id: 'abc456',
-                status : false,
-                lab_id:'102'
-            }
-            ],
+                labId:'32',
+                // 教师昵称
+                nickname:'',
+                // 头像地址
+                avatarUrl:''
+            }],
             // 当前数据总数
-            total :2,
+            // total :2,
             // 添加教师界面显示/隐藏
             addLabVisible:false,
             // 修改教师信息界面显示/隐藏
             updateVisible:false,
-
+            // 搜索内容
+            searchTeacher:'',
             // 简易switch 实验室数据, 这里暂时使用假数据
             // labList:[
             //     {
@@ -253,15 +249,17 @@ export default {
     methods:{
         // 查询教师信息
         getTeacherList(){
-            // this.$http.get(`teachers`,{params:this.queryInfo})
-            // .then(res=>{
-            //     console.log(res);
-            //     if(res.data.meta.status!==200)return this.$message.error('请求教师列表失败');
-            //     this.$message.success('请求教师列表成功');
-            //     this.teacherList =res.data.data.teachers;
-            //     this.total  =res.data.data.total;
-            // }
-            // )
+            console.log('1111');
+            this.$http.get(`/teacher`,{params:this.list})
+            .then(res=>{
+                console.log(res);
+            //     if(res.code!==200)return this.$message.error('请求教师列表失败');
+            //     else{
+            //         this.$message.success('请求教师列表成功');
+            //         console.log(res);
+            //     }
+            }
+            )
         },
         // 当每页数据条数发生改变的时候触发
         SizeChange(newSize){
@@ -273,7 +271,7 @@ export default {
             // this.queryInfo.pageNum = newNum;
             // this.getTeacherList();
         },
-        create(){
+        created(){
             this.getTeacherList();
         },
         changeStatus(status){

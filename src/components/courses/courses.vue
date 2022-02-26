@@ -27,7 +27,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_time"
+                            :label="courses.courseTime"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -47,7 +47,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.lab_id"
+                            :label="courses.labId"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -76,7 +76,7 @@
         align="center">
         </el-table-column>
         <el-table-column
-        prop="course_time"
+        prop="courseTime"
         label="课程时间"
         align="center">
         </el-table-column>
@@ -86,7 +86,7 @@
         align="center">
         </el-table-column>
         <el-table-column
-        prop="lab_id"
+        prop="labId"
         label="实验室"
         align="center">
         </el-table-column>
@@ -127,7 +127,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.course_time"
+                            :label="courses.courseTime"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -139,7 +139,7 @@
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
-                            :label="courses.lab_id"
+                            :label="courses.labId"
                             :value="courses.id">
                         </el-option>
                     </el-select>
@@ -182,11 +182,11 @@ export default {
                 // 课程主键
                 id:'1',
                 // 课程所在的实验室编号
-                lab_id:'101',
+                labId:'101',
                 // 课程名
                 name: '病理学',
                 // 课程时间
-                course_time: '1-2节',
+                courseTime: '1-2节',
                 // 课程星期
                 week:'周一'
             },
@@ -194,11 +194,11 @@ export default {
                // 课程主键
                 id:'11',
                 // 课程所在的实验室编号
-                lab_id:'103',
+                labId:'103',
                 // 课程名
                 name: '护理学',
                 // 课程时间
-                course_time: '3-4节',
+                courseTime: '3-4节',
                 // 课程星期
                 week:'周一'
             }

@@ -52,6 +52,23 @@ const routes = [{
 
 ]
 
+// 路由导航守卫
+// router.beforeEach((to, from, next) => {
+//     // 如果是login界面
+//     if (to.path == '/') {
+//         next()
+//     } else { // 如果不是login界面
+//         const token = window.sessionStorage.getItem('token');
+
+//         if (!token) {
+//             next('/login');
+//         } else {
+//             next();
+//         }
+
+//     }
+// })
+
 const router = new VueRouter({
     routes
 })

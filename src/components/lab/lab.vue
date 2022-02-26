@@ -30,7 +30,7 @@
         align="center">
         </el-table-column>
         <el-table-column
-        prop="bench_nums"
+        prop="benchNums"
         label="实验台数量"
         align="center">
         </el-table-column>
@@ -67,15 +67,15 @@ export default {
                 // 主键
                 id:'1',
                 // 实验室号
-                lab_id:'001',
+                labId:'001',
                 // 负责教师姓名
                 name:'小明',
                 // 实验台数量
-                bench_nums: '16',
+                benchNums: '16',
                 // 实验桌数量
-                bench_id:['001','002'],
+                benchId:['001','002'],
                 // 课程id
-                cou_id:'1',
+                couId:'1',
                 // 实验室简介
                 comment:'001实验室坐落于xxx',
 
@@ -84,15 +84,15 @@ export default {
                 // 主键
                 id:'2',
                 // 实验室号
-                lab_id:'002',
+                labId:'002',
                 // 负责教师姓名
                 name:'小红',
                 // 实验台数量
-                bench_nums: '14',
+                benchNums: '14',
                 // 实验桌数量
-                bench_id:['001','002'],
+                benchId:['001','002'],
                 // 课程id
-                cou_id:'2',
+                couId:'2',
                 // 实验室简介
                 comment:'002实验室坐落于xyy'
             }

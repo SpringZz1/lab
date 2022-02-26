@@ -32,18 +32,18 @@
         align="center">
         </el-table-column>
         <el-table-column
-        prop="open_id"
+        prop="openId"
         label="微信号"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="stu_id"
+        prop="stuId"
         label="学号"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="class_name"
+        prop="className"
         label="班级"
         align="center">
         </el-table-column>
@@ -94,11 +94,11 @@ export default {
                 // 学生姓名
                 name: '大明',
                 // 学生学号
-                stu_id: 'QSX3122',
+                stuId: 'QSX3122',
                 // 学生微信号码
-                open_id: 'dfw221',
+                openId: 'dfw221',
                 // 学生班级
-                class_name:'向日葵一班'
+                className:'向日葵一班'
             },
             {
             // 学生信息
@@ -106,11 +106,11 @@ export default {
             // 学生姓名
             name: '大红',
             // 学生学号
-            stu_id: 'QSX313',
+            stuId: 'QSX313',
             // 学生微信号码
-            open_id: 'avc221',
+            openId: 'avc221',
             // 学生班级
-            class_name:'红玫瑰一班'
+            className:'红玫瑰一班'
             }
             ],
             // 当前数据总数

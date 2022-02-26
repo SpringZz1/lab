@@ -9,7 +9,7 @@
             </div>
 
             <div>
-                <el-button type="primary">退出</el-button>
+                <el-button type="primary" @click="logOut">退出</el-button>
             </div>
         </el-header>
     <el-container>
@@ -67,11 +67,18 @@ export default {
             menuList:[]
         }
     },
-    methods:{}
+    methods:{
+        logOut(){
+            // 清除token
+            window.sessionStorage.removeItem('token');
+            // 回到登录页面
+            this.$router.push('/');
+        }
+    }
 }
 </script>
 
 <style scoped="scoped">
-@import 'D:/Code/lab/src/styles/home.css';
+@import 'D:/Code/Program/lab-v0.0/src/styles/home.css';
 
 </style>
