@@ -79,6 +79,28 @@ export default {
 </script>
 
 <style scoped="scoped">
-@import 'D:/Code/Program/lab-v0.0/src/styles/home.css';
+/* @import 'D:/Code/Program/lab-v0.0/src/styles/home.css'; */
 
+.el-container {
+    background: rgb(55, 63, 65);
+    height: 100%;
+}
+
+.el-header {
+    background-color: rgb(55, 61, 65);
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+    line-height: 60px;
+    color: white;
+    font-size: 22px;
+}
+
+.el-aside {
+    background: rgb(51, 55, 68);
+}
+
+.el-main {
+    background: rgb(234, 237, 241);
+}
 </style>

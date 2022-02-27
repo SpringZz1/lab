@@ -14,7 +14,7 @@
                     <el-input placeholder="请输入想要查询的教师工号" v-model="searchTeacher" class="input-with-select" @click="getTeacherList" clearable @clear="getTeacherList">
                     <el-button slot="append" icon="el-icon-search" ></el-button>
                     </el-input>
-                    <button style="width:100px;" @click="getTeacherList"></button>
+                    <!-- <button style="width:100px;" @click="getTeacherList"></button> -->
                 </div>
             </el-col>
             <!-- 新增教师按钮 -->
@@ -202,23 +202,23 @@ export default {
             list:
                 [{
                 // 教师id
-                id:'1',
+                // id:'1',
                 // 教师姓名
-                name: '12',
+                // name: '12',
                 // 教师电话
-                phone: '312',
+                // phone: '312',
                 // 教师工号
-                workId: '32',
+                // workId: '32',
                 // 教师open_id,等价于教师微信号
-                openId: '32',
+                // openId: '32',
                 // 审核状态
-                status : '32',
+                // status : '32',
                 // 管理的实验室
-                labId:'32',
+                // labId:'32',
                 // 教师昵称
-                nickname:'',
+                // nickname:'',
                 // 头像地址
-                avatarUrl:''
+                // avatarUrl:''
             }],
             // 当前数据总数
             // total :2,
@@ -250,7 +250,7 @@ export default {
         // 查询教师信息
         getTeacherList(){
             console.log('1111');
-            this.$http.get(`/teacher`,{params:this.list})
+            this.$http.get(`/teacher/list`)
             .then(res=>{
                 console.log(res);
             //     if(res.code!==200)return this.$message.error('请求教师列表失败');
@@ -270,9 +270,6 @@ export default {
         CurrentChange(newNum){
             // this.queryInfo.pageNum = newNum;
             // this.getTeacherList();
-        },
-        created(){
-            this.getTeacherList();
         },
         changeStatus(status){
             // 当前switch状态 boolean
@@ -314,7 +311,11 @@ export default {
             })
         }
 
-    }
+    },
+    // 生命周期函数，放在methods，data外面，这样能够让一加载页面就渲染页面
+    created(){
+        this.getTeacherList();
+    },
 }
 </script>
 

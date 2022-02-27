@@ -2,9 +2,9 @@ import Vue from 'vue';
 import App from './App.vue';
 import './plugins/element.js';
 import router from './router';
-import qs from 'qs'
-Vue.prototype.qs = qs //全局加载,必须应用
-    // 导入axios
+// 导入全局样式
+import './styles/global.css'
+// 导入axios
 import axios from 'axios';
 Vue.prototype.$http = axios;
 // 配置基础地址

@@ -84,6 +84,41 @@
 
 <style scoped="scoped">
 /* 引入外部css，这里相对路径还没找到，暂时使用绝对路径 */
-@import 'D:/Code/Program/lab-v0.0/src/styles/login.css';
+/* @import 'D:/Code/Program/lab-v0.0/src/styles/login.css'; */
+.login {
+    height: 100%;
+    background: rgb(43,75,107);
+}
 
+.login_content {
+    width: 450px;
+    height: 300px;
+    background: white;
+    border: 2px solid black;
+    /* margin: 0 auto; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* transform: translate(-50%,-50%); */
+    border-radius: 10px;
+    text-align: center;
+}
+
+.login_box {
+    /* margin-left: 10%; */
+    margin-right: 5%;
+}
+
+.login_content p {
+    font-size: 30px;
+    font-weight: 700;
+    color: red;
+}
+
+.btn {
+    width: 80%;
+    margin-left: 40px;
+    margin-bottom: 25px;
+}
 </style>
