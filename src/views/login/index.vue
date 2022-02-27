@@ -57,7 +57,7 @@
             this.$refs.loginFormRel.validate(valid=>{
                 if(!valid) return;
                 this.$http.post(`/admin/login`,this.loginForm).then(res=>{
-                    console.log(res);
+                    // console.log(res);
                     // 判断成功与否
                     if(res.data.code!==200){
                         this.$message.error('登录失败');
