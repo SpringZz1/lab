@@ -67,6 +67,8 @@
             v-model="scoped.row.status"
             active-color="#13ce66"
             inactive-color="#ff4949"
+            :active-value=1
+            :inactive-value=0
             @change="changeStatus(scoped.row.id,$event)">
         </el-switch>
         </template>
@@ -78,7 +80,7 @@
         <template slot-scope="scope">
             <el-row>
                     <el-tooltip class="item" effect="dark" content="修改信息" placement="top">
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="editTeacher(scope.row)"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="updateTeacher(scope.row)" ></el-button>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="删除" placement="top">
                         <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTeacher(scope.row)"></el-button>
@@ -173,14 +175,21 @@
         width="50%"
         >
         <!-- 内容区域 -->
-        <template>
-            <span>修改教师信息界面，修改什么内容尚待讨论</span>
-        </template>
-
+        <el-form :model="updateTeacherList" :rules="updateTeacherFormRul" ref="updateTeacherFormRel" label-width="auto">
+            <el-form-item label="教师姓名" >
+                <el-input v-model="updateTeacherList.name" ></el-input>
+            </el-form-item>
+            <el-form-item label="电话号码">
+                <el-input v-model="updateTeacherList.phone" ></el-input>
+            </el-form-item>
+            <el-form-item label="工号">
+                <el-input v-model="updateTeacherList.workId" disabled></el-input>
+            </el-form-item>
+        </el-form>
 
         <span slot="footer" class="dialog-footer">
         <el-button @click="updateVisible = false">取 消</el-button>
-        <el-button type="primary" @click="updateVisible = false">确 定</el-button>
+        <el-button type="primary" @click="updateTeacherButton">确 定</el-button>
     </span>
     </el-dialog>
 </div>
@@ -232,17 +241,31 @@ export default {
             labList: generateData(),
             labValue: [101],
             // 存储获取到的教师信息
-            editTeacherList:{
-                // 修改教师审核状态
-                status:'',
+            updateTeacherList:{
+                // 教师id，用于携带传入post请求
+                id: '',
                 // 修改教师电话
                 phone: '',
                 // 修改教师姓名
                 name:'',
-                // 修改教师昵称
-                nickname:'',
                 // 修改教师工号
-                workId:''
+                workId:'',
+
+            },
+            // 教师信息修改规则
+            updateTeacherFormRul:{
+            name:[
+                { required: true, message: '请输入姓名', trigger: 'blur' },
+                { min: 3, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+            ],
+            phone:[
+                { required: true, message: '请输入姓名', trigger: 'blur' },
+                { min: 3, max: 12, message: '请输入正确长度的号码', trigger: 'blur'}
+            ],
+            workId:[
+                { required: true, message: '请输入工号', trigger: 'blur' },
+                { min: 3, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+            ]
             }
         }
     },
@@ -255,7 +278,7 @@ export default {
                 if(res.data.code!==200)return this.$message.error('请求教师列表失败');
                 else{
                     this.$message.success('请求教师列表成功');
-                    console.log(res);
+                    // console.log(res);
                     // 获得后台数据
                     this.list = res.data.data;
                     // console.log(res.data.data.length);
@@ -283,10 +306,10 @@ export default {
             console.log('status: '+ typeof status);
             // 更新教师审核状态
             // console.log('status: ' + Number(status));
-            this.$http.post(`/teacher/update`,{id: id, status: Number(status)})
+            this.$http.post(`/teacher/update`,{id: id, status: status})
             .then(res=>{
                 console.log('before');
-                console.log(res);
+                // console.log(res.data.data[].status);
                 console.log('after');
             })
             // 当前switch状态 boolean
@@ -339,14 +362,31 @@ export default {
                 })
             });
         },
-        // 修改教师信息
-        editTeacher(row){
-            // 根据教师信息获取当前教师信息
-            this.$http.get(`teacher/$(row.id)`).then(res=>{
-                console.log(res);
-            // 存储获得到教师信息
-            this.editTeacherParams.phone =res.data.data.phone;
-            console.log(this.editTeacher);
+        // 点击修改信息，弹窗显示内容
+        updateTeacher(row){
+            // 弹窗显示
+            this.updateVisible = true;
+            console.log('success');
+            // 根据教师id获取当前教师信息
+            this.$http.get(`teacher/findById/${row.id}`)
+            .then(res=>{
+                // console.log(res);
+                // 保存该教师信息
+                this.updateTeacherList.id = res.data.data.id;
+                this.updateTeacherList.name = res.data.data.name;
+                this.updateTeacherList.phone = res.data.data.phone;
+                this.updateTeacherList.workId = res.data.data.workId;
+            })
+        },
+        // 点击修改教师弹窗确定按钮，发送后台请求修改信息
+        updateTeacherButton(){
+            this.$http.post(`/teacher/update`,{id: this.updateTeacherList.id, name: this.updateTeacherList.name, phone: this.updateTeacherList.phone})
+            .then(res=>{
+                // console.log(res);
+                // console.log(this.updateTeacherList.phone);
+                this.updateVisible = false;
+                this.getTeacherList();
+                // console.log(res.data.data.name);
             })
         }
 

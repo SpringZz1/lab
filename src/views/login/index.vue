@@ -53,10 +53,10 @@
     methods:{
         login(){
             // 登录前需要校验， 校验成功才能登录
-            console.log('11111');
             this.$refs.loginFormRel.validate(valid=>{
                 if(!valid) return;
                 this.$http.post(`/admin/login`,this.loginForm).then(res=>{
+                    console.log('进入登陆界面');
                     // console.log(res);
                     // 判断成功与否
                     if(res.data.code!==200){
