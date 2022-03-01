@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="6">
                 <div>
-                    <el-input placeholder="请输入想要查询的教师电话" v-model="searchInput.phone" class="input-with-select" @click="getTeacherList" clearable @clear="getTeacherList">
+                    <el-input placeholder="请输入想要查询的教师电话" v-model="searchInput.phone" class="input-with-select" @click="addLab()" clearable @clear="getTeacherList">
                     </el-input>
                 </div>
             </el-col>
@@ -86,7 +86,7 @@
                         <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTeacher(scope.row)"></el-button>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="分配实验室" placement="top">
-                        <el-button type="warning" icon="el-icon-setting" size="mini" @click="addLabVisible=true"></el-button>
+                        <el-button type="warning" icon="el-icon-setting" size="mini" @click="addLab(scope.row)"></el-button>
                     </el-tooltip>
             </el-row>
         </template>
@@ -114,6 +114,10 @@
         <template>
             <el-transfer
             v-model="labValue"
+            :props="{
+                key:'labId',
+                label:'labName'
+            }"
             :data="labList"
             :titles="['可分配实验室','已分配实验室']"
             class="labTransfer"
@@ -199,16 +203,16 @@
 export default {
     data(){
         // 穿梭栏添加实验室
-        const generateData = _ => {
-            const labList = [];
-            for (let i = 101; i <= 104; i++) {
-                 labList.push({
-                    key: i,
-                    label: `实验室 ${ i }`,
-                    });
-            }
-            return labList
-        };
+        // const generateData = _ => {
+        //     const data = [];
+        //     for (let i = 101; i <= 104; i++) {
+        //          labList.push({
+        //             key: i,
+        //             label: `实验室 ${ i }`,
+        //             });
+        //     }
+        //     return labList
+        // };
         return{
             // 分页相关参数
             // 当前页码，默认为第一页
@@ -219,7 +223,7 @@ export default {
             total:0,
             // 教师数据列表, 从数据库获取渲染
             list:[],
-            // 添加教师界面显示/隐藏
+            // 添加教师实验室显示/隐藏
             addLabVisible:false,
             // 修改教师信息界面显示/隐藏
             updateVisible:false,
@@ -238,19 +242,18 @@ export default {
             // {
             //     lab_id:'102'
             // }],
-            labList: generateData(),
-            labValue: [101],
+            // labList: generateData(),
+            // labValue: [101],
             // 存储获取到的教师信息
             updateTeacherList:{
                 // 教师id，用于携带传入post请求
-                id: '',
+                // id: '',
                 // 修改教师电话
-                phone: '',
+                // phone: '',
                 // 修改教师姓名
-                name:'',
+                // name:'',
                 // 修改教师工号
-                workId:'',
-
+                // workId:'',
             },
             // 教师信息修改规则
             updateTeacherFormRul:{
@@ -266,7 +269,11 @@ export default {
                 { required: true, message: '请输入工号', trigger: 'blur' },
                 { min: 3, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
             ]
-            }
+            },
+            // 穿梭栏左边数据，也就是列出实验室
+            labList:[],
+            // 教师管理的实验室
+            labValue:[]
         }
     },
     methods:{
@@ -347,14 +354,10 @@ export default {
                         this.$message.error('删除失败');
                     }else{
                         this.$message.success('删除成功');
+                        // 刷新列表
+                        this.getTeacherList();
                     }
                 })
-                this.$message({
-                    type: 'success',
-                    message:'删除成功!'
-                });
-                // 刷新列表
-                this.getTeacherList();
             }).catch(()=>{
                 this.$message({
                     type: 'info',
@@ -388,12 +391,84 @@ export default {
                 this.getTeacherList();
                 // console.log(res.data.data.name);
             })
+        },
+        // 获取所有实验室列表
+        getLabList(){
+            this.$http.get(`/lab/list`)
+            .then(res=>{
+                console.log(res);
+                const data = [];
+                if(res.data.code!==200){
+                    this.$message.error('请求实验室数据失败');
+                }else{
+                    this.$message.success('请求实验室数据成功');
+                    for(var i = 0;i<res.data.data.length;i++){
+                        data.push({
+                            labId:res.data.data[i].labId,
+                            labName: res.data.data[i].labName
+                        })
+                    }
+                    this.labList = data;
+                    // this.labList = Object.entries(data);
+                    console.log(this.labList);
+                }
+            //     const data = [];
+            //     if(res.data.code!==200){
+            //         this.$message.error('请求实验室数据失败');
+            //     }else{
+            //         this.$message.success('请求实验室数据成功');
+            //         // 将所有的实验室id全部插入labList中, 使用循环
+            //         console.log(res);
+            //         for(var i = 0 ;i<res.data.data.length; i++){
+            //             data.push({
+            //                 labId: res.data.data[i].labId,
+            //                 labName: res.data.data[i].labName
+            //             })
+            //         }
+            //         // console.log(typeof data);
+            //         this.labList = Object.values(data);
+            //         console.log(typeof this.labList);
+            //         // this.labList.push(res.data.data[0].labId);
+            //     }
+            // })
+        })
+        },
+        // 根据id获取这个教师所管理的实验室
+        addLab(row){
+            // 弹窗显示
+            this.addLabVisible=true;
+            this.$http.get(`teacher/findById/${row.id}`)
+            .then(res=>{
+                const data=[];
+               if(res.data.code!==200){
+                   this.$message.error('获取该教师的实验室信息失败');
+               }else{
+                   this.$message.success('获取该教师的实验室信息成功');
+                    // console.log(res.data.data.labId);
+                    // 实验室id插入labValue, string转array
+                    data.push({
+                        labId:res.data.data.labId,
+                        labName: res.data.data.labName
+                    })
+                    // console.log(data);
+                    // console.log(data[0].labName);
+                    let temp= data[0].labId;
+                    let temp1 = eval(temp);
+                    // console.log(typeof temp1);
+                    this.labValue = temp1;
+                    // console.log(typeof this.labValue);
+                    // console.log(this.labValue.labId);
+                    // this.labValue = JSON.parse('['+ res.data.data.labId + ']');
+                    // console.log(this.labValue);
+               }
+            })
         }
 
     },
     // 生命周期函数，放在methods，data外面，这样能够让一加载页面就渲染页面
     created(){
         this.getTeacherList();
+        this.getLabList();
     },
 }
 </script>
