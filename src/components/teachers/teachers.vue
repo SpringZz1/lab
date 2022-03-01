@@ -109,6 +109,7 @@
         title="分配实验室"
         :visible.sync="addLabVisible"
         width="50%"
+
         >
         <!-- 内容区域 -->
         <template>
@@ -123,52 +124,10 @@
             class="labTransfer"
             ></el-transfer>
         </template>
-        <!-- 简易版switch -->
-            <!-- <el-table
-                :data="labList"
-                 border
-                 style="width: 100%">
-                <el-table-column
-                    prop="lab_id"
-                    label="实验室号"
-                    width="180"
-                    align="center">
-                </el-table-column>
-                <el-table-column
-                    prop="lab_id"
-                    label="分配"
-                    align="center">
-                        <template slot-scope="scoped">
-                            <el-switch
-                                v-model="scoped.row.teacher_status"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                                @change="changeStatus(scoped.row.teacher_work_id,$event)">
-                            </el-switch>
-                        </template>
-                </el-table-column>
-
-
-            </el-table> -->
-
-            <!-- <el-table-column
-                prop="lab_id"
-                label="分配状态"
-                align="center">
-                <template>
-                    <el-switch
-                        v-model="value"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                    >
-                    </el-switch>
-                </template>
-            </el-table-column> -->
-         <!-- </el-table> -->
-
+        <!-- 选项部分 -->
         <span slot="footer" class="dialog-footer">
         <el-button @click="addLabVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addLabVisible = false">确 定</el-button>
+        <el-button type="primary" @click="changeLab">确 定</el-button>
     </span>
     </el-dialog>
 
@@ -183,10 +142,10 @@
             <el-form-item label="教师姓名" >
                 <el-input v-model="updateTeacherList.name" ></el-input>
             </el-form-item>
-            <el-form-item label="电话号码">
+            <el-form-item label="电话号码" prop="phone">
                 <el-input v-model="updateTeacherList.phone" ></el-input>
             </el-form-item>
-            <el-form-item label="工号">
+            <el-form-item label="工号" prop="workId">
                 <el-input v-model="updateTeacherList.workId" disabled></el-input>
             </el-form-item>
         </el-form>
@@ -202,17 +161,6 @@
 <script>
 export default {
     data(){
-        // 穿梭栏添加实验室
-        // const generateData = _ => {
-        //     const data = [];
-        //     for (let i = 101; i <= 104; i++) {
-        //          labList.push({
-        //             key: i,
-        //             label: `实验室 ${ i }`,
-        //             });
-        //     }
-        //     return labList
-        // };
         return{
             // 分页相关参数
             // 当前页码，默认为第一页
@@ -224,36 +172,26 @@ export default {
             // 教师数据列表, 从数据库获取渲染
             list:[],
             // 添加教师实验室显示/隐藏
-            addLabVisible:false,
+            addLabVisible :false,
             // 修改教师信息界面显示/隐藏
             updateVisible:false,
-            // 搜索内容
+            // 搜索教师内容
             searchInput:{
                 // 教师姓名
                 name:'',
                 // 教师电话
                 phone:''
             },
-            // 简易switch 实验室数据, 这里暂时使用假数据
-            // labList:[
-            //     {
-            //     lab_id:'101'
-            // },
-            // {
-            //     lab_id:'102'
-            // }],
-            // labList: generateData(),
-            // labValue: [101],
             // 存储获取到的教师信息
             updateTeacherList:{
                 // 教师id，用于携带传入post请求
-                // id: '',
+                id: '',
                 // 修改教师电话
-                // phone: '',
+                phone: '',
                 // 修改教师姓名
-                // name:'',
+                name:'',
                 // 修改教师工号
-                // workId:'',
+                workId:'',
             },
             // 教师信息修改规则
             updateTeacherFormRul:{
@@ -262,7 +200,7 @@ export default {
                 { min: 3, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
             ],
             phone:[
-                { required: true, message: '请输入姓名', trigger: 'blur' },
+                { required: true, message: '请输入电话号码', trigger: 'blur' },
                 { min: 3, max: 12, message: '请输入正确长度的号码', trigger: 'blur'}
             ],
             workId:[
@@ -273,13 +211,15 @@ export default {
             // 穿梭栏左边数据，也就是列出实验室
             labList:[],
             // 教师管理的实验室
-            labValue:[]
+            labValue:[],
+            // 保存管理实验室教师的id
+            labTeacherId:[]
         }
     },
     methods:{
         // 查询教师信息
         getTeacherList(){
-            console.log('1111');
+            // console.log('1111');
             this.$http.get(`/teacher/list`)
             .then(res=>{
                 if(res.data.code!==200)return this.$message.error('请求教师列表失败');
@@ -297,27 +237,27 @@ export default {
         },
         // 当每页数据条数发生改变的时候触发
         SizeChange(newSize){
-            console.log(`每页 ${newSize} 条`);
+            // console.log(`每页 ${newSize} 条`);
             this.pageSize =newSize;
             this.getTeacherList();
         },
         // 当前页码发生变化的时候触发
         CurrentChange(newNum){
-            console.log(`当前页码 {$newNum} 页`);
+            // console.log(`当前页码 {$newNum} 页`);
             this.pageNum = newNum;
             this.getTeacherList();
         },
         // 修改教师审核状态
         changeStatus(id,status){
-            console.log('id: '+id);
-            console.log('status: '+ typeof status);
+            // console.log('id: '+id);
+            // console.log('status: '+ typeof status);
             // 更新教师审核状态
             // console.log('status: ' + Number(status));
             this.$http.post(`/teacher/update`,{id: id, status: status})
             .then(res=>{
-                console.log('before');
+                // console.log('before');
                 // console.log(res.data.data[].status);
-                console.log('after');
+                // console.log('after');
             })
             // 当前switch状态 boolean
             // this.getTeacherList();
@@ -327,7 +267,7 @@ export default {
             // console.log('22222');
             this.$http.post(`teacher/find`, this.searchInput)
             .then(res=>{
-                console.log(res);
+                // console.log(res);
                 if(res.data.data.length==0){
                     this.$message.error('不存在该教师');
                 }else{
@@ -351,9 +291,9 @@ export default {
                     // console.log(typeof row.id);
                     // console.log(res);
                     if(res.data.code!==200){
-                        this.$message.error('删除失败');
+                        this.$message.error('删除教师失败');
                     }else{
-                        this.$message.success('删除成功');
+                        this.$message.success('删除教师成功');
                         // 刷新列表
                         this.getTeacherList();
                     }
@@ -369,7 +309,7 @@ export default {
         updateTeacher(row){
             // 弹窗显示
             this.updateVisible = true;
-            console.log('success');
+            // console.log('success');
             // 根据教师id获取当前教师信息
             this.$http.get(`teacher/findById/${row.id}`)
             .then(res=>{
@@ -379,6 +319,7 @@ export default {
                 this.updateTeacherList.name = res.data.data.name;
                 this.updateTeacherList.phone = res.data.data.phone;
                 this.updateTeacherList.workId = res.data.data.workId;
+                // console.log(this.updateTeacherList);
             })
         },
         // 点击修改教师弹窗确定按钮，发送后台请求修改信息
@@ -396,7 +337,7 @@ export default {
         getLabList(){
             this.$http.get(`/lab/list`)
             .then(res=>{
-                console.log(res);
+                // console.log(res);
                 const data = [];
                 if(res.data.code!==200){
                     this.$message.error('请求实验室数据失败');
@@ -410,27 +351,8 @@ export default {
                     }
                     this.labList = data;
                     // this.labList = Object.entries(data);
-                    console.log(this.labList);
+                    // console.log(this.labList);
                 }
-            //     const data = [];
-            //     if(res.data.code!==200){
-            //         this.$message.error('请求实验室数据失败');
-            //     }else{
-            //         this.$message.success('请求实验室数据成功');
-            //         // 将所有的实验室id全部插入labList中, 使用循环
-            //         console.log(res);
-            //         for(var i = 0 ;i<res.data.data.length; i++){
-            //             data.push({
-            //                 labId: res.data.data[i].labId,
-            //                 labName: res.data.data[i].labName
-            //             })
-            //         }
-            //         // console.log(typeof data);
-            //         this.labList = Object.values(data);
-            //         console.log(typeof this.labList);
-            //         // this.labList.push(res.data.data[0].labId);
-            //     }
-            // })
         })
         },
         // 根据id获取这个教师所管理的实验室
@@ -444,23 +366,41 @@ export default {
                    this.$message.error('获取该教师的实验室信息失败');
                }else{
                    this.$message.success('获取该教师的实验室信息成功');
-                    // console.log(res.data.data.labId);
                     // 实验室id插入labValue, string转array
                     data.push({
-                        labId:res.data.data.labId,
-                        labName: res.data.data.labName
+                        labId: res.data.data.labId,
+                        labName: res.data.data.labName,
+                        teacherId: res.data.data.id
                     })
                     // console.log(data);
-                    // console.log(data[0].labName);
-                    let temp= data[0].labId;
+                    let temp = data[0].labId;
                     let temp1 = eval(temp);
-                    // console.log(typeof temp1);
+
                     this.labValue = temp1;
-                    // console.log(typeof this.labValue);
-                    // console.log(this.labValue.labId);
-                    // this.labValue = JSON.parse('['+ res.data.data.labId + ']');
+                    this.labTeacherId = (data[0].teacherId);
                     // console.log(this.labValue);
+                    // console.log(this.labTeacherId);
+                    // console.log(this.labValue);
+                    // this..push(data[0].teacherId);
                }
+            })
+        },
+        // 穿梭框转移时修改教师管理数据库
+        changeLab(){
+            // 先将结果转换为array
+            let temp = Array.from(this.labValue);
+            // 再将array格式转换为JSON格式，传给后端
+            let temp1 = JSON.stringify(temp);
+            // console.log(typeof this.labTeacherId);
+            this.$http.post(`/teacher/updateLab`, {id:this.labTeacherId, labIds: temp1})
+            .then(res=>{
+                // console.log(res);
+                if(res.data.code!==200){
+                    this.$message.error('更新教师实验室信息失败');
+                }else{
+                    this.$message.success('更新教师实验室信息成功');
+                    this.addLabVisible = false;
+                }
             })
         }
 

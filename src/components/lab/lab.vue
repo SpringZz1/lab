@@ -9,17 +9,17 @@
     <!-- 渲染数据表格 -->
     <el-card align="center">
      <el-table
-    :data="labList"
+    :data="labList.slice((pageNum-1)*pageSize,pageNum*pageSize)"
     border
     style="width: 100%">
         <el-table-column
-        prop="id"
+        prop="labName"
         label="实验室"
         width="180"
         align="center">
         </el-table-column>
         <el-table-column
-        prop="name"
+        prop="teacherName"
         label="负责教师"
         width="180"
         align="center">
@@ -41,8 +41,8 @@
       @size-change="SizeChange"
       @current-change="CurrentChange"
       :current-page="1"
-      :page-sizes="[1,2,3,4]"
-      :page-size="2"
+      :page-sizes="[5,10,15,20]"
+      :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -54,70 +54,40 @@
 export default {
     data(){
         return{
-            // query绑定搜索框
-            // 请求实验室信息参数
-            queryInfo:{
-                query:'',
-                pageNum:'1',
-                pageSize:'2'
-            },
-            // 实验室数据列表, 这里暂时使用假数据，后续从数据库获取渲染
-            labList:[
-                {
-                // 主键
-                id:'1',
-                // 实验室号
-                labId:'001',
-                // 负责教师姓名
-                name:'小明',
-                // 实验台数量
-                benchNums: '16',
-                // 实验桌数量
-                benchId:['001','002'],
-                // 课程id
-                couId:'1',
-                // 实验室简介
-                comment:'001实验室坐落于xxx',
-
-            },
-            {
-                // 主键
-                id:'2',
-                // 实验室号
-                labId:'002',
-                // 负责教师姓名
-                name:'小红',
-                // 实验台数量
-                benchNums: '14',
-                // 实验桌数量
-                benchId:['001','002'],
-                // 课程id
-                couId:'2',
-                // 实验室简介
-                comment:'002实验室坐落于xyy'
-            }
-            ],
-            // 当前数据总数
-            total :2,
-
+            // 分页相关参数
+            // 当前页码，默认为第一页
+            pageNum:1,
+            // 一页默认5条信息
+            pageSize:5,
+            // 显示数据总数
+            total:0,
+            // 实验室数据列表, 从数据库获取渲染
+            labList:[],
         }
     },
     methods:{
         //  axios获取后台数据函数
         getLabList(){
+            this.$http.get(`lab/list`)
+            .then(res=>{
+                if(res.data.code!==200){
+                    this.$message.error('获取实验室信息失败');
+                }else{
+                    this.$message.success('获取实验室信息成功');
+                     this.labList = res.data.data;
+                     this.total = parseInt(res.data.data.length);
+                }
+            })
 
         },
         // 当每页数据条数发生改变的时候触发
         SizeChange(newSize){
-            // this.queryInfo.pageSize =newSize;
-            // this.getTeacherList();
+            this.pageSize =newSize;
+            this.getLabList();
         },
         // 当前页码发生变化的时候触发
         CurrentChange(newNum){
-            // this.queryInfo.pageNum = newNum;
-            // this.getTeacherList();
-        },
-        create(){
+            this.pageNum = newNum;
             this.getLabList();
         },
         changeStatus(status){
@@ -125,6 +95,10 @@ export default {
             // this.getTeacherList();
         }
 
+    },
+    // 点击实验室详情就发起请求渲染表格
+    created(){
+        this.getLabList();
     }
 }
 </script>
