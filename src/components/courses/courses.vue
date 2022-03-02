@@ -21,7 +21,7 @@
                     </el-input>
                 </div>
             </el-col>
-            <el-col :span="2">
+            <el-col :span="1">
                 <div>
                     <el-button type="primary" @click="searchCourse">查找</el-button>
                 </div>
@@ -95,44 +95,37 @@
         <!-- 内容区域 -->
             <el-row  style="margin-bottom:20px">
                 <el-col :span="12">
-                    <el-select v-model="addCourse" filterable placeholder="课程名" >
-                        <el-option
-                            v-for="courses in courseList"
-                            :key="courses.id"
-                            :label="courses.name"
-                            :value="courses.id">
-                        </el-option>
-                    </el-select>
+                    <!-- 课程名使用输入框输入 -->
+                    <el-input v-model="addCourseList.name" placeholder="请输入课程名" style="width:48%"></el-input>
                 </el-col>
                 <el-col :span="12">
-                    <el-select v-model="addCourse" filterable placeholder="课程时间">
-                        <el-option
-                            v-for="courses in courseList"
-                            :key="courses.id"
-                            :label="courses.courseTime"
-                            :value="courses.id">
-                        </el-option>
+                    <!-- 课程时间用输入框输入 -->
+                    <el-input v-model="addCourseList.courseTime" placeholder="课程时间，例: 第1-2节" style="width:48%"></el-input>
                     </el-select>
                 </el-col>
             </el-row>
             <el-row >
                 <el-col :span="12">
-                    <el-select v-model="addCourse" filterable placeholder="实验室">
+                    <!-- 添加实验室号，使用下拉框选择，数据从后台获取 -->
+                    <!-- <el-select v-model="addCourseList.labId" filterable placeholder="实验室">
                         <el-option
                             v-for="courses in courseList"
                             :key="courses.id"
                             :label="courses.labId"
                             :value="courses.id">
                         </el-option>
-                    </el-select>
+                    </el-select> -->
+                    <!-- 添加实验室，第一个数据暂时使用输入框 -->
+                    <el-input v-model="addCourseList.labId" placeholder="请输入实验室号，例: 101" style="width:48%"></el-input>
                 </el-col>
                 <el-col :span="12">
-                    <el-select v-model="addCourse" filterable placeholder="星期">
+                    <!-- 星期几选择，使用下拉框 -->
+                    <el-select v-model="addCourseList.week" filterable placeholder="星期">
                         <el-option
-                            v-for="courses in courseList"
-                            :key="courses.id"
-                            :label="courses.week"
-                            :value="courses.id">
+                            v-for="item in this.week"
+                            :key="item"
+                            :label="item"
+                            :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -140,7 +133,7 @@
 
         <span slot="footer" class="dialog-footer">
         <el-button @click="addCourseVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addCourseVisible = false">确 定</el-button>
+        <el-button type="primary" @click="addCourse">确 定</el-button>
     </span>
     </el-dialog>
 </div>
@@ -164,21 +157,15 @@ export default {
                 name:'',
                 labId:''
             },
-            // 提供添加实验室下拉选项
-            addCourseInput:{
-                // 课程名
-                name:[],
-                // 课程时间
-                courseTime:[],
-                // 实验室id
-                labId:[],
-                // 周几
-                week:[]
-            },
             // 保存添加课程信息
-            addCourse:'',
-            input:[{
-            }],
+            addCourseList:{
+                labId:'',
+                name:'',
+                courseTime:'',
+                week:''
+            },
+            // 添加课程时使用
+            week:['星期一','星期二','星期三','星期四','星期五','星期六','星期日'],
             // 添加课程显示/隐藏
             addCourseVisible : false
         }
@@ -188,7 +175,7 @@ export default {
         getCourseList(){
             this.$http.get(`course/list`)
             .then(res=>{
-                console.log(res);
+                // console.log(res);
                 if(res.data.code!==200){
                     this.$message.error('请求课程信息失败');
                 }else{
@@ -223,6 +210,25 @@ export default {
                     this.$message.success('删除课程成功');
                     // 刷新列表
                     this.getCourseList();
+                }
+            })
+        },
+        // 添加课程
+        addCourse(){
+            console.log(typeof this.addCourseList.week);
+            let temp = JSON.stringify(this.addCourseList);
+            console.log(this.addCourseList);
+            console.log(typeof temp);
+            this.$http.post(`course/save`,{labId: this.addCourseList.labId, name: this.addCourseList.name,
+             courseTime: this.addCourseList.courseTime, week: this.addCourseList.week})
+            .then(res=>{
+                if(res.data.code!==200){
+                    this.$message.error('添加课程失败');
+                }else{
+                    this.$message.success('添加课程成功');
+                    //刷新列表
+                    this.getCourseList();
+                    this.addCourseVisible=false;
                 }
             })
         }

@@ -27,7 +27,7 @@
                     </el-input>
                 </div>
             </el-col>
-            <el-col :span="2">
+            <el-col :span="1">
                 <div>
                     <el-button type="primary" @click="searchStudent">查找</el-button>
                 </div>
