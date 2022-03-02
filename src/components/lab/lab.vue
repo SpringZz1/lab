@@ -51,6 +51,12 @@
         align="center">
         <template slot-scope="scope">
             <el-row>
+                    <el-tooltip class="item" effect="dark" content="添加实验桌" placement="top">
+                        <el-button type="success" icon="el-icon-plus" size="mini" ></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" content="删除实验桌" placement="top">
+                        <el-button type="warning" icon="el-icon-minus" size="mini" ></el-button>
+                    </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="删除" placement="top">
                         <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLab(scope.row)"></el-button>
                     </el-tooltip>
@@ -135,6 +141,7 @@ export default {
                 if(res.data.code!==200){
                     this.$message.error('获取实验室信息失败');
                 }else{
+                    console.log(res);
                     this.$message.success('获取实验室信息成功');
                      this.labList = res.data.data;
                      this.total = parseInt(res.data.data.length);
