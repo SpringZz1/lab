@@ -220,7 +220,7 @@ export default {
         // 查询教师信息
         getTeacherList(){
             // console.log('1111');
-            this.$http.get(`/teacher/list`)
+            this.$http.get(`/admin/teacher/list`)
             .then(res=>{
                 if(res.data.code!==200)return this.$message.error('请求教师列表失败');
                 else{
@@ -253,7 +253,7 @@ export default {
             // console.log('status: '+ typeof status);
             // 更新教师审核状态
             // console.log('status: ' + Number(status));
-            this.$http.post(`/teacher/update`,{id: id, status: status})
+            this.$http.post(`/admin/teacher/update`,{id: id, status: status})
             .then(res=>{
                 // console.log('before');
                 // console.log(res.data.data[].status);
@@ -265,7 +265,7 @@ export default {
         // 搜索教师
         searchTeacher(){
             // console.log('22222');
-            this.$http.post(`teacher/find`, this.searchInput)
+            this.$http.post(`/admin/teacher/find`, this.searchInput)
             .then(res=>{
                 // console.log(res);
                 if(res.data.data.length==0){
@@ -286,7 +286,7 @@ export default {
                 // console.log('row: '+ typeof row);
                 // console.log('id:'+ typeof row.id);
                 // 点击确认后，向后台发送请求，删除教师
-                this.$http.post(`teacher/delete`,{id : row.id})
+                this.$http.post(`/admin/teacher/delete`,{id : row.id})
                 .then(res=>{
                     // console.log(typeof row.id);
                     // console.log(res);
@@ -311,7 +311,7 @@ export default {
             this.updateVisible = true;
             // console.log('success');
             // 根据教师id获取当前教师信息
-            this.$http.get(`teacher/findById/${row.id}`)
+            this.$http.get(`/admin/teacher/findById/${row.id}`)
             .then(res=>{
                 // console.log(res);
                 // 保存该教师信息
@@ -324,7 +324,7 @@ export default {
         },
         // 点击修改教师弹窗确定按钮，发送后台请求修改信息
         updateTeacherButton(){
-            this.$http.post(`/teacher/update`,{id: this.updateTeacherList.id, name: this.updateTeacherList.name, phone: this.updateTeacherList.phone})
+            this.$http.post(`/admin/teacher/update`,{id: this.updateTeacherList.id, name: this.updateTeacherList.name, phone: this.updateTeacherList.phone})
             .then(res=>{
                 // console.log(res);
                 // console.log(this.updateTeacherList.phone);
@@ -335,7 +335,7 @@ export default {
         },
         // 获取所有实验室列表
         getLabList(){
-            this.$http.get(`/lab/list`)
+            this.$http.get(`/admin/lab/list`)
             .then(res=>{
                 // console.log(res);
                 const data = [];
@@ -359,7 +359,7 @@ export default {
         addLab(row){
             // 弹窗显示
             this.addLabVisible=true;
-            this.$http.get(`teacher/findById/${row.id}`)
+            this.$http.get(`/admin/teacher/findById/${row.id}`)
             .then(res=>{
                 const data=[];
                if(res.data.code!==200){
@@ -392,7 +392,7 @@ export default {
             // 再将array格式转换为JSON格式，传给后端
             let temp1 = JSON.stringify(temp);
             // console.log(typeof this.labTeacherId);
-            this.$http.post(`/teacher/updateLab`, {id:this.labTeacherId, labIds: temp1})
+            this.$http.post(`/admin/teacher/updateLab`, {id:this.labTeacherId, labIds: temp1})
             .then(res=>{
                 // console.log(res);
                 if(res.data.code!==200){

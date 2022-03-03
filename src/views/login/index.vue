@@ -55,7 +55,7 @@
             // 登录前需要校验， 校验成功才能登录
             this.$refs.loginFormRel.validate(valid=>{
                 if(!valid) return;
-                this.$http.post(`/admin/login`,this.loginForm).then(res=>{
+                this.$http.post(`admin/admin/login`,this.loginForm).then(res=>{
                     console.log('进入登陆界面');
                     // console.log(res);
                     // 判断成功与否

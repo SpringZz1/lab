@@ -19,7 +19,7 @@
                 <div>
                     <el-select v-model="searchInput.labId" filterable placeholder="实验室" clearable>
                         <el-option
-                            v-for="lab in labList"
+                              v-for="lab in labList"
                             :key="lab.labId"
                             :label="lab.labName"
                             :value="lab.labId">
@@ -107,7 +107,6 @@
                 <el-col :span="12">
                     <!-- 课程时间用输入框输入 -->
                     <el-input v-model="addCourseList.courseTime" placeholder="课程时间，例: 第1-2节" style="width:60%"></el-input>
-                    </el-select>
                 </el-col>
             </el-row>
             <el-row >
@@ -115,18 +114,18 @@
                     <!-- 添加实验室号，使用下拉框选择，数据从后台获取 -->
                     <el-select v-model="addCourseList.labId" filterable placeholder="实验室">
                         <el-option
-                            v-for="lab in labList"
+                              v-for="lab in labList"
                             :key="lab.labId"
                             :label="lab.labName"
                             :value="lab.labId">
                         </el-option>
                     </el-select>
-                    <!-- 添加实验室，第一个数据暂时使用输入框
+                    <!-- 添加实验室，第一个数据暂时使用输入框 -->
                     <!-- <el-input v-model="addCourseList.labId" placeholder="请输入实验室号，例: 101" style="width:60%"></el-input> -->
                 </el-col>
                 <el-col :span="12">
                     <!-- 星期几选择，使用下拉框 -->
-                    <el-select v-model="addCourseList.week" filterable placeholder="星期" style="width:60%">
+                    <el-select v-model="addCourseList.week" filterable placeholder="星期">
                         <el-option
                             v-for="item in this.week"
                             :key="item"
@@ -172,16 +171,16 @@ export default {
             },
             // 添加课程时使用
             week:['星期一','星期二','星期三','星期四','星期五','星期六','星期日'],
+            // 课程列表
+            labList:[],
             // 添加课程显示/隐藏
-            addCourseVisible : false,
-            // 保存实验室id和名字
-            labList:[]
+            addCourseVisible : false
         }
     },
     methods:{
-        // 查询所有课程信息
+        // 查询课程信息
         getCourseList(){
-            this.$http.get(`course/list`)
+            this.$http.get(`admin/course/list`)
             .then(res=>{
                 // console.log(res);
                 if(res.data.code!==200){
@@ -194,11 +193,17 @@ export default {
             })
         },
         searchCourse(){
-            this.$http.post(`/course/selectByParam`,this.searchInput)
+            // searchInput中的labId为number类型，需要转换成string类型, 这里错了很多次，需要记住
+            this.searchInput.labId = this.searchInput.labId +'';
+            console.log(this.searchInput);
+            this.$http.post(`admin/course/selectByParam`,this.searchInput)
             .then(res=>{
-                // console.log(res);
-                if(res.data.code!==200){
-                    this.$message.error('不存在与搜索条件相同的课程');
+                console.log(res);
+                console.log(this.searchInput.labId);
+                // console.log(this.searchInput.name);
+                // console.log(typeof this.searchInput.labId);
+                if(res.data.data.length==0){
+                    this.$message.error('不存在该课程');
                 }else{
                     this.$message.success('查找成功');
                     this.courseList = res.data.data;
@@ -216,8 +221,9 @@ export default {
              this.pageNum = newNum;
              this.getCourseList();
         },
+        // 删除课程
         deleteCourse(row){
-            this.$http.get(`course/delete${row.id}`)
+            this.$http.get(`admin/course/delete${row.id}`)
             .then(res=>{
                 if(res.data.code!==200){
                     this.$message.error('删除课程失败');
@@ -234,7 +240,7 @@ export default {
             let temp = JSON.stringify(this.addCourseList);
             console.log(this.addCourseList);
             console.log(typeof temp);
-            this.$http.post(`course/save`,{labId: this.addCourseList.labId, name: this.addCourseList.name,
+            this.$http.post(`admin/course/save`,{labId: this.addCourseList.labId, name: this.addCourseList.name,
              courseTime: this.addCourseList.courseTime, week: this.addCourseList.week})
             .then(res=>{
                 if(res.data.code!==200){
@@ -247,9 +253,9 @@ export default {
                 }
             })
         },
-        // 获得实验室labId
+         // 获得实验室labId
         getLabList(){
-            this.$http.get(`lab/list`)
+            this.$http.get(`admin/lab/list`)
             .then(res=>{
                 const data=[];
                 if(res.data.code!==200){
@@ -265,10 +271,6 @@ export default {
                     }
                     // labList得到实验室id和实验室名字
                     this.labList = data;
-                    // console.log(this.labList[0].labId);
-                    // this.labList.labId = data.labId;
-                    // this.labList.labName = data.labName;
-                    // console.log(data.labId);
             }
         })
     },

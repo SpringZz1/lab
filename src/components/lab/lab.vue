@@ -51,11 +51,8 @@
         align="center">
         <template slot-scope="scope">
             <el-row>
-                    <el-tooltip class="item" effect="dark" content="添加实验桌" placement="top">
-                        <el-button type="success" icon="el-icon-plus" size="mini" ></el-button>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="删除实验桌" placement="top">
-                        <el-button type="warning" icon="el-icon-minus" size="mini" ></el-button>
+                    <el-tooltip class="item" effect="dark" content="实验桌操作" placement="top">
+                        <el-button type="warning" icon="el-icon-setting" size="mini" @click="benchOperate(scope.row)"></el-button>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="删除" placement="top">
                         <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLab(scope.row)"></el-button>
@@ -97,6 +94,38 @@
         <el-button type="primary" @click="addLab">确 定</el-button>
     </span>
     </el-dialog>
+    <!-- 在这个实验室中添加或删除实验桌弹窗 -->
+     <el-dialog
+        title="实验桌操作"
+        :visible.sync="benchVisible"
+        >
+        <!-- 内容区域 使用表格展示这个实验室所拥有的实验桌-->
+        <el-table :data="benchList">
+            <el-table-column property = "benchName" label = "实验桌编号" width="150"></el-table-column>
+            <el-table-column property = "comment" labael = "实验桌简介" width="200"></el-table-column>
+            <!-- 操作按钮 -->
+            <el-table-column
+        prop=""
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+            <el-row>
+                    <el-tooltip class="item" effect="dark" content="修改信息" placement="top">
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="updateBench(scope.row)"></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                        <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteBench(scope.row)"></el-button>
+                    </el-tooltip>
+            </el-row>
+        </template>
+        </el-table-column>
+        </el-table>
+        <!-- 底部内容 -->
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="updateVisible = false">取 消</el-button>
+        <el-button type="primary" >确 定</el-button>
+    </span>
+    </el-dialog>
 </div>
 </template>
 
@@ -130,13 +159,17 @@ export default {
                      { required:true, message: '请输入实验室简介', trigger: 'blur'},
                     { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur'}
                 ]
-            }
+            },
+            // 实验室的实验桌操作弹窗显示/隐藏
+            benchVisible : false,
+            // 获取到的该实验室的实验桌信息, 用来渲染实验桌表格
+            benchList:[]
         }
     },
     methods:{
         //  axios获取后台数据函数
         getLabList(){
-            this.$http.get(`lab/list`)
+            this.$http.get(`/admin/lab/list`)
             .then(res=>{
                 if(res.data.code!==200){
                     this.$message.error('获取实验室信息失败');
@@ -172,7 +205,7 @@ export default {
             }).then(()=>{
 
                 // 点击确认后，向后台发送请求，删除实验室
-                this.$http.get(`lab/delete/${row.labId}`)
+                this.$http.get(`/admin/lab/delete/${row.labId}`)
                 .then(res=>{
                     // console.log(typeof row.id);
                     // console.log(res);
@@ -194,7 +227,7 @@ export default {
         },
         // 添加实验室
         addLab(){
-            this.$http.post(`lab/save`, this.addLabList)
+            this.$http.post(`/admin/lab/save`, this.addLabList)
             .then(res=>{
                 if(res.data.code!==200){
                     this.$message.error('添加实验室失败');
@@ -213,7 +246,43 @@ export default {
             this.addLabVisible = false;
             // 清空列表信息
             this.addLabList = {};
+        },
+        // 操作该实验室的实验桌，可以增加实验桌和删除实验桌
+        getBenchList(row){
+            // 实验桌界面显示
+            benchVisible = true;
+        },
+        // 修改实验桌的名字和备注
+        updateBench(row){
+        },
+        // 删除实验桌
+        deleteBench(row){
+            this.$confirm('此操作将永久删除该实验桌， 是否继续？','提示',{
+                confirmButtonText: '确认',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(()=>{
+                // 点击确认后，向后台发送请求，删除实验桌
+                this.$http.get(`/admin/bench/delete/${row.labId}`)
+                .then(res=>{
+                    // console.log(typeof row.id);
+                    // console.log(res);
+                    if(res.data.code!==200){
+                        this.$message.error('删除实验桌失败');
+                    }else{
+                        this.$message.success('删除实验桌成功');
+                        // 刷新列表
+                        this.getBenchList();
+                    }
+                })
+            }).catch(()=>{
+                this.$message({
+                    type: 'info',
+                    message:'已取消删除'
+                })
+            });
         }
+
     },
     // 点击实验室详情就发起请求渲染表格
     created(){

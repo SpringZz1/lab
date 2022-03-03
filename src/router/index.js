@@ -15,7 +15,7 @@ const routes = [{
         name: 'Home',
         component: () =>
             import ('../views/home/index.vue'),
-        // 增加子目录,分别是教师信息,学生信息,实验室信息,课程信息,以及修改密码
+        // 增加子目录,分别是教师信息,学生信息,实验室信息,实验桌操作,课程信息,以及修改密码
         children: [{
                 path: '/teachers',
                 name: 'Teachers',
@@ -33,6 +33,12 @@ const routes = [{
                 name: 'Lab',
                 component: () =>
                     import ('../components/lab/lab.vue')
+            },
+            {
+                path: '/bench',
+                name: 'Bench',
+                component: () =>
+                    import ('../components/bench/bench.vue')
             },
             {
                 path: '/courses',

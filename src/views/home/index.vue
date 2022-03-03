@@ -38,6 +38,11 @@
                 <i class="el-icon-document"></i>
                 <span slot="title">实验室信息</span>
             </el-menu-item>
+            <!-- 实验桌操作 -->
+            <el-menu-item index="bench">
+                <i class="el-icon-document"></i>
+                <span slot="title">实验桌操作</span>
+            </el-menu-item>
             <!-- 课程信息 -->
             <el-menu-item index="courses">
                 <i class="el-icon-setting"></i>

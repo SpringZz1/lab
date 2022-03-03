@@ -8,7 +8,7 @@ import './styles/global.css'
 import axios from 'axios';
 Vue.prototype.$http = axios;
 // 配置基础地址
-axios.defaults.baseURL = 'http://124.222.93.17:8080/admin/'
+axios.defaults.baseURL = 'http://124.222.93.17:8080'
 
 Vue.config.productionTip = false
 

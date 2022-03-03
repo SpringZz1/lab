@@ -144,7 +144,7 @@ export default {
     methods:{
         // 查询学生信息
         getStudentList(){
-            this.$http.get(`/student/list`)
+            this.$http.get(`/admin/student/list`)
             .then(res=>{
                 if(res.data.code!==200){
                     this.$message.error('请求学生信息失败');
@@ -178,7 +178,7 @@ export default {
                 type: 'warning'
             }).then(res=>{
                 // 点击确认后， 向后台发送请求，删除学生
-                this.$http.get(`student/delete/${row.id}`)
+                this.$http.get(`/admin/student/delete/${row.id}`)
                 .then(res=>{
                     if(res.data.code!==200){
                         this.$message.error('删除学生失败');
@@ -191,7 +191,7 @@ export default {
             })
         },
         searchStudent(){
-            this.$http.post(`student/selectByparam`, this.searchInput)
+            this.$http.post(`/admin/student/selectByparam`, this.searchInput)
             .then(res=>{
                 if(res.data.data.length==0){
                     this.$message.error('不存在该学生');
