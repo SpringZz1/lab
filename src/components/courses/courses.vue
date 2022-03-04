@@ -219,7 +219,7 @@ export default {
         // 当前页码发生变化的时候触发
         CurrentChange(newNum){
              this.pageNum = newNum;
-             this.getCourseList();
+            //  this.getCourseList();
         },
         // 删除课程
         deleteCourse(row){

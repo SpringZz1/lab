@@ -168,7 +168,7 @@ export default {
         CurrentChange(newNum){
             // console.log(`当前页码 {$newNum} 页`);
             this.pageNum = newNum;
-            this.getStudentList();
+            // this.getStudentList();
         },
         // 删除学生
         deleteStudent(row){
@@ -198,6 +198,7 @@ export default {
                 }else{
                     this.$message.success('查询学生成功');
                     this.studentList = res.data.data;
+                    this.total = res.data.data.length;
                 }
             })
         }

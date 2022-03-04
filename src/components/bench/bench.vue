@@ -250,7 +250,7 @@ export default {
                     this.$message.success('添加实验桌成功');
                     // 刷新列表
                     this.getBenchList();
-                    this.addBenchVisible = false;
+                    this.empty();
                 }
             })
         },
@@ -262,7 +262,7 @@ export default {
         // 当前页码发生变化的时候触发
         CurrentChange(newNum){
             this.pageNum = newNum;
-            this.getLabList();
+            // this.getLabList();
         },
         // 添加实验室清空输入框
         empty(){

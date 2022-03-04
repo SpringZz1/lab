@@ -60,7 +60,7 @@
                     // console.log(res);
                     // 判断成功与否
                     if(res.data.code!==200){
-                        this.$message.error('登录失败');
+                        this.$message.error('登录失败,请检查你的账号或者密码是否正确');
                     }else{
                         this.$message.success('登录成功');
                         // 保存当前的token

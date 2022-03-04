@@ -222,6 +222,7 @@ export default {
             // console.log('1111');
             this.$http.get(`/admin/teacher/list`)
             .then(res=>{
+                // console.log('1');
                 if(res.data.code!==200)return this.$message.error('请求教师列表失败');
                 else{
                     this.$message.success('请求教师列表成功');
@@ -245,7 +246,7 @@ export default {
         CurrentChange(newNum){
             // console.log(`当前页码 {$newNum} 页`);
             this.pageNum = newNum;
-            this.getTeacherList();
+            // this.getTeacherList();
         },
         // 修改教师审核状态
         changeStatus(id,status){
@@ -273,6 +274,7 @@ export default {
                 }else{
                     this.$message.success('查询教师成功');
                     this.list = res.data.data;
+                    this.total = res.data.data.length;
                 }
             })
         },

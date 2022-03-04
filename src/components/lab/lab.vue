@@ -51,9 +51,6 @@
         align="center">
         <template slot-scope="scope">
             <el-row>
-                    <el-tooltip class="item" effect="dark" content="实验桌操作" placement="top">
-                        <el-button type="warning" icon="el-icon-setting" size="mini" @click="benchOperate(scope.row)"></el-button>
-                    </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="删除" placement="top">
                         <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLab(scope.row)"></el-button>
                     </el-tooltip>
@@ -95,37 +92,6 @@
     </span>
     </el-dialog>
     <!-- 在这个实验室中添加或删除实验桌弹窗 -->
-     <el-dialog
-        title="实验桌操作"
-        :visible.sync="benchVisible"
-        >
-        <!-- 内容区域 使用表格展示这个实验室所拥有的实验桌-->
-        <el-table :data="benchList">
-            <el-table-column property = "benchName" label = "实验桌编号" width="150"></el-table-column>
-            <el-table-column property = "comment" labael = "实验桌简介" width="200"></el-table-column>
-            <!-- 操作按钮 -->
-            <el-table-column
-        prop=""
-        label="操作"
-        align="center">
-        <template slot-scope="scope">
-            <el-row>
-                    <el-tooltip class="item" effect="dark" content="修改信息" placement="top">
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="updateBench(scope.row)"></el-button>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                        <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteBench(scope.row)"></el-button>
-                    </el-tooltip>
-            </el-row>
-        </template>
-        </el-table-column>
-        </el-table>
-        <!-- 底部内容 -->
-        <span slot="footer" class="dialog-footer">
-        <el-button @click="updateVisible = false">取 消</el-button>
-        <el-button type="primary" >确 定</el-button>
-    </span>
-    </el-dialog>
 </div>
 </template>
 
@@ -190,7 +156,7 @@ export default {
         // 当前页码发生变化的时候触发
         CurrentChange(newNum){
             this.pageNum = newNum;
-            this.getLabList();
+            // this.getLabList();
         },
         changeStatus(status){
             // 当前switch状态 boolean
@@ -236,7 +202,7 @@ export default {
                     // 刷新列表
                     this.getLabList();
                     // 弹窗消失
-                    this.addLabVisible = false;
+                    this.empty();
                 }
             })
         },
@@ -281,8 +247,7 @@ export default {
                     message:'已取消删除'
                 })
             });
-        }
-
+        },
     },
     // 点击实验室详情就发起请求渲染表格
     created(){

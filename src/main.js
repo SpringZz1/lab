@@ -12,17 +12,10 @@ axios.defaults.baseURL = 'http://124.222.93.17:8080'
 
 Vue.config.productionTip = false
 
-// Vue.prototype.axios = axios.create({
-//     headers: { 'content-type': 'application/x-www-form-urlencoded' },
-//     transformRequest: [function(data) {
-//         return qs.stringify({
-//             ...data
-//         })
-//     }]
-// });
 
 
 new Vue({
-    router,
-    render: h => h(App)
-}).$mount('#app')
+        router,
+        render: h => h(App)
+    }).$mount('#app')
+    // Vue.prototype.$message = message;
