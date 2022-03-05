@@ -10,24 +10,46 @@
 	</view> -->
 	<div style="margin-top: 2%;">
 		<uni-tag text="返回" type="primary" style="float: left; margin-left: 20%;"></uni-tag>
-		<uni-tag text="确认" type="success" style="float: right; margin-right: 20%;"></uni-tag>
+		<uni-tag text="确认" type="success" style="float: right; margin-right: 20%;" @click="getUserInfo"></uni-tag>
 	</div>
 	</view>
 </template>
 
 <script>
-	export default {
+	export default{
 		data(){
 			return{
-				// 注册信息入口
-				registerList:{
-					work_id:'',
-					name:'',
-					phone:''
-				}
+				
 			}
+		},
+		methods:{
+			getUserCode(){
+				uni.login({
+					provider:'weixin',
+					success: function(loginRes) {
+						// 获得code
+						console.log(loginRes.code);
+					}
+				})
+			},
+			getUserInfo(){
+				// 获得用户信息
+				uni.getUserProfile({
+					desc:'weixin',
+					success:res=>{
+						console.log('用户信息',res.userInfo);
+					}
+				})
+			}
+			
+		},
+		onLoad(){
+			// 进入页面获取
+			this.getUserInfo();
+			
 		}
 	}
+		
 </script>
 
 <style>

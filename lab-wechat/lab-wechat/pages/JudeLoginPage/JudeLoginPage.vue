@@ -21,29 +21,38 @@
 				uni.login({
 					provider: 'weixin',
 					success: function(loginRes){
-						console.log(loginRes.code);
+						// console.log(loginRes.code);
 						uni.request({
-							url: 'http://10.133.64.6:8080/teacher/login',
+							url: 'http://124.222.93.17:8080/teacher/login',
 							// method必须大写
 							method:'POST',
 							 header: {
 									'content-type': 'application/json',
-									}, 
+									},
 							data:{
-								"code": loginRes.code
-								// code: '123'
+								code: loginRes.code
 							},
 							success: res => {
-								console.log(loginRes.code);
-								console.log(res.data.msg);
+								// 没有注册的教师账号
+								if(res.data.code == 108){
+									console.log('没有注册，进入注册界面');
+									uni.reLaunch({
+										url:'/pages/teacher/register'
+									})
+								}else{
+									console.log('进入实验室信息查看界面');
+									uni.switchTab({
+										url:'/pages/teacher/labInfo'
+									})
+								}
 							}
 						})
 					},
-				});	
-				
+				});
+
 			}
 		},
-		
+
 		onLoad() {
 			// let self = this;
 			this.baseURL = getApp().globalData.baseURL;
@@ -54,20 +63,20 @@
 			console.log('App launch');
 			console.log(this.baseURL+ '/teacher/login');
 			// 判断标识, 使用token判断
-			let token = uni.getStorageSync('token');
-			// 如果没有token, 则跳转到注册界面
-			if(!token){
-				console.log('没有token, 进入注册页面');
-				uni.reLaunch({
-					url:'/pages/teacher/register'
-				})
-			}else{
-				console.log('有token');
-				// 跳转到首页，跳转tabbar页面, 必须使用这个方法
-				uni.switchTab({
-					url:'/pages/teacher/labInfo'
-				})
-			}
+			// let token = uni.getStorageSync('token');
+			// // 如果没有token, 则跳转到注册界面
+			// if(!token){
+			// 	console.log('没有token, 进入注册页面');
+			// 	uni.reLaunch({
+			// 		url:'/pages/teacher/register'
+			// 	})
+			// }else{
+			// 	console.log('有token');
+			// 	// 跳转到首页，跳转tabbar页面, 必须使用这个方法
+			// 	uni.switchTab({
+			// 		url:'/pages/teacher/labInfo'
+			// 	})
+			// }
 		}
 	}
 </script>
