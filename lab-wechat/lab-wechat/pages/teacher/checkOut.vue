@@ -33,10 +33,69 @@
 	export default {
 		data(){
 			return{
-				
+				baseURL:'',
+				// 介绍上个页面传输的数据
+				inputReceive:{
+					labId:'',
+					benchId:'',
+					couId:''
+				},
+				// 学生反馈信息
+				feedbackList:{
+					// 学生id
+					id:'',
+					// 学生学号
+					stuId:'',
+					// 实验桌id
+					benchId:'',
+					// 实验室id
+					labId:'',
+					// 学生上传的图片
+					photo:'',
+					// 学生反馈的备注
+					comment:'',
+					// 还不知道是干什么的
+					feedback:'',
+					// 提交时间
+					commitTime:'',
+					// 反馈时间
+					feedbackTime: '',
+					// 课程id
+					couId:'',
+					// 学生姓名
+					stuName:'',
+					// 课程名
+					couName:'',
+					// 实验室编号
+					labName:'',
+					// 实验桌名字
+					benchName:'',
+					// 哪天上课
+					week:'',
+					// 具体上课时间
+					courseTime:'',
+					// 实验桌的审核状态
+					status:''
+				}
 			}
 		},
 		methods:{
+			// 发送请求获得数据
+			getFeedbackList(){
+				uni.request({
+					url: this.baseURL + 'teacher/lab/check/',
+					data:{
+						labId: this.inputReceive.labId,
+						benchId: this.inputReceive.benchId,
+						couId: this.inputReceive.couId
+					},
+					method:'POST',
+					success: res => {
+						console.log(res);
+						this.feedbackList = res.data.data;
+					}
+				})
+			},
 			feedback(){
 				this.$refs.popup.open('center')
 			},
@@ -50,6 +109,15 @@
 				// ...
 				this.$refs.popup.close()
 			}
+		},
+		onLoad(e) {
+			this.baseURL = getApp().globalData.baseURL;
+			// 上个页面传给这个页面查看详情，上个页面传进来三个参数,labId,benchId,couId
+			this.inputReceive.labId = e.labId;
+			this.inputReceive.benchId = e.benchId;
+			this.inputReceive.couId = e.couId;
+			
+			
 		}
 	}
 </script>

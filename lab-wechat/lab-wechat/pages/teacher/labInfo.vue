@@ -20,7 +20,7 @@
 					// 获得课程信息，object格式
 					labList:{
 						// 保存上个页面传送进来的教师id
-						id:',',
+						id:'',
 						// 实验室id
 						labId:'',
 						// 实验室名字
@@ -34,6 +34,7 @@
 				// 得到教师id向后台发送请求渲染卡片
 				getLabList(){
 					uni.request({
+						// 根据教师id进入这个教师的具体信息界面, 这里先写死数据
 						url: this.baseURL + 'lab/detail/list/' + '11',
 						method:'GET',
 						success: res => {
@@ -62,7 +63,16 @@
 				// 查看某个实验室的所有实验桌
 				goDetail(labId){
 					// 跳转到查看详情页面
-					console.log(labId);
+					if(!labId)
+					{
+						console.log('获得labId失败');
+					}else{
+						console.log('成功获得labId:',labId);
+						// 获得labId进行跳转
+						uni.navigateTo({
+							url: 'detail?labId=' + labId
+						})
+					}
 					
 				}
 			},

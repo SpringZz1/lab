@@ -315,6 +315,7 @@ export default {
             // 根据教师id获取当前教师信息
             this.$http.get(`/admin/teacher/findById/${row.id}`)
             .then(res=>{
+                console.log(`/admin/teacher/findById/${row.id}`);
                 // console.log(res);
                 // 保存该教师信息
                 this.updateTeacherList.id = res.data.data.id;
@@ -361,8 +362,11 @@ export default {
         addLab(row){
             // 弹窗显示
             this.addLabVisible=true;
+            // this.$http.get(`/admin/teacher/findById/259`)
             this.$http.get(`/admin/teacher/findById/${row.id}`)
             .then(res=>{
+                console.log(res);
+                // console.log(`/admin/teacher/findById/${row.id}`);
                 const data=[];
                if(res.data.code!==200){
                    this.$message.error('获取该教师的实验室信息失败');
