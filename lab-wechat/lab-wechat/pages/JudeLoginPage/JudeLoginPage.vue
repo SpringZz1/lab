@@ -33,6 +33,7 @@
 								code: loginRes.code
 							},
 							success: res => {
+								console.log(res);
 								// 没有注册的教师账号
 								if(res.data.code == 108){
 									console.log('没有注册，进入注册界面');
@@ -41,8 +42,10 @@
 									})
 								}else{
 									console.log('进入实验室信息查看界面');
-									uni.switchTab({
-										url:'/pages/teacher/labInfo'
+									// uni.redirectTo 关闭当前页面，跳转到应用内的某个页面
+									uni.redirectTo({
+										// 传参进入查看实验室信息页面，只查看这个教师自己管理的实验室信息
+										url:'/pages/teacher/labInfo?id='+res.data.data.id
 									})
 								}
 							}
@@ -58,7 +61,6 @@
 			this.baseURL = getApp().globalData.baseURL;
 			this.getOpenId();
 
-			// console.log(this.loginForm.code);
 
 			console.log('App launch');
 			console.log(this.baseURL+ '/teacher/login');
