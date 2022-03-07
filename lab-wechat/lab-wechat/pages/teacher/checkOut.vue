@@ -1,25 +1,37 @@
 <template>
 	<view class="container">
 	<uni-card 
-		title="实验室" 
-		mode="title" 
+		title="实验室信息"
 		:is-shadow="true" 
-		subtitle="001"
-		extra="课程" 
-		note="Tips"
 	>
-	<view class="image-box">
-		<image src="../../static/c1.png" mode=""></image>
-	</view>
 		<view>
-			<p>学号: {{}}</p>
-			<p>姓名: {{}}</p>
-			<p>备注: {{}}</p>
-			<p>上课时间: {{}}</p>
+			<p>实验室: {{feedbackList.labName}}</p>
+			<p>实验台号: {{feedbackList.benchName}}</p>
+			<p>课程: {{feedbackList.couName}}</p>
 		</view>
+		<view class="image-box">
+			<image src="../../static/c1.png" mode=""></image>
+		</view>
+	</uni-card>
+	
+	<uni-card
+	title="学生信息"
+	>
+	<view>
+		<p>学号: {{feedbackList.stuId}}</p>
+		<p>姓名: {{feedbackList.stuName}}</p>
+		<p>备注: {{feedbackList.comment}}</p>
+		<p>上课时间: {{feedbackList.week}}, {{feedbackList.courseTime}}</p>
+	</view>
+		
+	</uni-card>
+	<uni-card
+	title="反馈区"
+	:is-shadow="true"
+	>
 		<view>
-			<button type="default" style="float: left;">通过</button>
-			<button type="default" style="float: right;" @click="feedback">不通过</button>
+			<button type="warn" style="float: left;" @click="feedback" size="mini">不通过</button>
+			<button type="primary" style="float: right;" @click="passCheck" size="mini">通过</button>
 			<uni-popup ref="popup" type="dialog">
 				<uni-popup-dialog mode="input" title="信息反馈" placeholder="请输入反馈信息" :before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
 			</uni-popup>
@@ -85,9 +97,13 @@
 				uni.request({
 					url: this.baseURL + 'teacher/lab/check/',
 					data:{
-						labId: this.inputReceive.labId,
-						benchId: this.inputReceive.benchId,
-						couId: this.inputReceive.couId
+						// 单元测试，先写死进行测试
+						labId: 1,
+						benchId: 1,
+						couId: 110
+						// labId: this.inputReceive.labId,
+						// benchId: this.inputReceive.benchId,
+						// couId: this.inputReceive.couId
 					},
 					method:'POST',
 					success: res => {
@@ -106,8 +122,76 @@
 				// 输入框的值
 				console.log(value)
 				// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
+				// 不通过则发送请求
+				uni.request({
+					url: this.baseURL + 'teacher/lab/checkFeedback',
+					data:{
+						// 这里进行单元测试，先写死进行测试
+						labId: 1,
+						benchId: 1,
+						couId: 110,
+						status: 0,
+						comment: value
+						// labId: this.inputReceive.labId,
+						// benchId: this.inputReceive.benchId,
+						// couId: this.inputReceive.couId
+						// status: 0
+						// comment: value
+					},
+					method:'POST',
+					success: res => {
+						console.log(res);
+						// 点击按钮后跳转到上一个页面
+						uni.navigateBack({
+							// 回到上一个页面
+							delta: 1
+						})
+					}
+				})
 				// ...
 				this.$refs.popup.close()
+			},
+			passCheck(){
+				// 点击通过按钮直接将status改变为1，即通过, 并且成功不需要写回复，点击通过即可
+				uni.request({
+					url: this.baseURL + 'teacher/lab/checkFeedback',
+					data:{
+						// 这里进行单元测试，先写死进行测试
+						labId: 1,
+						benchId: 1,
+						couId: 110,
+						status: 1,
+						// labId: this.inputReceive.labId,
+						// benchId: this.inputReceive.benchId,
+						// couId: this.inputReceive.couId
+						// status: 1
+					},
+					method: 'POST',
+					success: res => {
+						console.log(res);
+						// 请求失败
+						if(res.data.code!==200){
+							uni.showToast({
+								title:'验收操作失败!',
+								icon:'error',
+								duration:2000
+							})
+						}else{
+							// 请求成功
+							uni.showToast({
+								title:'验收成功',
+								icon:'none',
+								duration:2000
+							})
+							// 跳转到上一个页面
+							uni.navigateBack({
+								// 回到上一个页面
+								delta: 1
+							})
+						}
+						
+					}
+				})
 			}
 		},
 		onLoad(e) {
@@ -116,7 +200,7 @@
 			this.inputReceive.labId = e.labId;
 			this.inputReceive.benchId = e.benchId;
 			this.inputReceive.couId = e.couId;
-			
+			this.getFeedbackList();
 			
 		}
 	}
@@ -127,6 +211,7 @@
 		display: inline-block;
 		width: 100px;
 		height: auto;
+		margin-bottom: 5%;
 	}
 	.container{
 		width: 100%;

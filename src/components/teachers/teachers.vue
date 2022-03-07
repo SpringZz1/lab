@@ -316,7 +316,7 @@ export default {
             this.$http.get(`/admin/teacher/findById/${row.id}`)
             .then(res=>{
                 console.log(`/admin/teacher/findById/${row.id}`);
-                // console.log(res);
+                console.log(res);
                 // 保存该教师信息
                 this.updateTeacherList.id = res.data.data.id;
                 this.updateTeacherList.name = res.data.data.name;
@@ -373,8 +373,18 @@ export default {
                }else{
                    this.$message.success('获取该教师的实验室信息成功');
                     // 实验室id插入labValue, string转array
+                    // 对labId进行判断，如果是null则替换成[]
+                    let tmp = res.data.data.labId;
+                    if((!tmp && typeof(tmp)!="undefined" && tmp!=0)){
+                        console.log('是null');
+                        tmp = [];
+                        console.log(tmp);
+                    }else{
+                        console.log('不是null');
+                    }
                     data.push({
-                        labId: res.data.data.labId,
+                        // 进行null值判断, 如果是null，则替换成[]
+                        labId: tmp,
                         labName: res.data.data.labName,
                         teacherId: res.data.data.id
                     })
