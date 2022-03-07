@@ -18,21 +18,21 @@
 		</div>
 	</div> -->
 	<view>
-		<uni-card  is-full="true">
+<!-- 		<uni-card  is-full="true" mode="feedbackList">
 			<div class= "imagePart">
 				<image src="../../static/c1.png" mode=""></image>
 			</div>
 			<div class="infoDetail">
-				<p>实验室号: {{infoList.lab_id}}</p>
-				<p>实验台号: {{infoList.id}}</p>
-				<p>课程名: {{infoList.name}}</p>
-				<p>上课时间: {{infoList.week}} {{infoList.course_iime}}</p>
-				<p>教师反馈: {{infoList.feedback}}</p>
+				<p>实验室号: {{feedbackList.lab_id}}</p>
+				<p>实验台号: {{feedbackList.id}}</p>
+				<p>课程名: {{feedbackList.name}}</p>
+				<p>上课时间: {{feedbackList.week}} {{feedbackList.course_iime}}</p>
+				<p>教师反馈: {{feedbackList.feedback}}</p>
 			</div>
 			<div class="btn">
 				<button type="primary">确认</button>
 			</div>
-		</uni-card>
+		</uni-card> -->
 	</view>
 </template>
 
@@ -40,15 +40,15 @@
 	export default{
 		data(){
 			return{
-				infoList:{
+				feedbackList:{
 					// 实验室号
-					lab_id:'',
+					labName:'',
 					// 实验台号
-					id:'',
+					benchName:'',
 					// 课程名
-					name:'',
+					couName:'',
 					// 课程时间
-					course_iime:'',
+					courseTime:'',
 					// 星期
 					week:'',
 					// 教师反馈
@@ -58,6 +58,17 @@
 		},
 		methods:{
 			
+		},
+		onLoad(e) {
+			// console.log(e.labName);
+			this.feedbackList.labName = e.labName;
+			console.log(this.feedbackList.labName);
+			this.feedbackList.benchName = e.benchName;
+			this.feedbackList.couName = e.couName;
+			this.feedbackList.week = e.week;
+			// console.log(e.week);
+			this.feedbackList.courseTime = e.courseTime;
+			// console.log(this.feedbackList.courseTime);
 		}
 	}
 </script>

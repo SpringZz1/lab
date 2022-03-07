@@ -1,14 +1,13 @@
 <template>
 	<view>
 		<uni-card v-for="bench in benchList" is-full="false" :title="bench.lab_id" >
-			<div>
-				<p>课程: {{bench.name}}</p>
-				<p>时间: {{bench.week}},{{bench.time}}</p>
+			<div style="text-align: center;">
+				<p>课程: {{bench.courseName}}</p>
+				<p>时间: {{bench.week}},{{bench.courseTime}}</p>
 			</div>
-			<div style="float: right;">
-				<p><button type="default" size="mini" > 扫码拍照</button></p>
-				<p><button type="default" size="mini" > 查看教师反馈</button></p>
-				<p><button type="default" size="mini" > 再次提交</button></p>
+			<div class = "btn">
+				<span><button type="default" size="mini" style="float: left;" @click="uploadInfo(bench.couId, bench.week, bench.courseTime)"> 扫码拍照</button></span>
+				<span><button type="default" size="mini" style="float: right;" @click="feedback(bench.couId, bench.week, bench.courseTime)"> 查看反馈</button></span>
 			</div>
 			
 			
@@ -22,45 +21,73 @@
 	export default {
 			data(){
 				return{
+					baseURL:'',
 					// 获得实验台相关信息, 这里使用暂时假数据
-					benchList:[
-						{
-						// 实验桌编号
-						id:'1',
-						// 实验室编号
-						lab_id:'001',
-						// 课程名称
-						name:'护理学',
-						// 课程时间
-						time:'1-2节',
-						// 课程星期
-						week:'周一'
-					},
+					benchList:
 					{
 						// 实验桌编号
-						id:'1',
+						id:'',
 						// 实验室编号
-						lab_id:'001',
+						labId:'',
 						// 课程名称
-						name:'护理学',
+						name:'',
 						// 课程时间
-						time:'1-2节',
+						time:'',
 						// 课程星期
-						week:'周一'
+						week:''
+					},
+					benchDetail:{
+						
 					}
-					]
 				}
 			},
 			methods:{
-				goDetail(){
-					// 跳转到查看详情页面，此处暂时写死
+				// 获得实验室信息
+				getBenchList(){
+					uni.request({
+						// url: this.baseURL + 'student/GetCourseDetailByLabId?labId=' + this.benchList.labId + '&benchId=' + this.benchList.benchList,
+						url: this.baseURL + 'student/GetCourseDetailByLabId?labId=' + '17' + '&benchId=' + '8',
+						method:'POST',
+						success: res => {
+							// console.log(res);
+							this.benchList = res.data.data;
+							this.benchDetail = res.data.detail;
+							// console.log(this.benchDetail);
+							// this.feedbackList = res.data.data;
+						}
+					})
+				},
+				uploadInfo(couId, week, courseTime){
+					// 把必要信息传入拍照页面
+					// console.log(this.benchDetail.labId);
+					// console.log(this.benchDetail.benchId);
 					uni.navigateTo({
-						url:'./detail'
+						url: './uploadInfo?labId=' + this.benchDetail.labId + '&benchId=' + this.benchDetail.bencId + '&couId=' 
+						+ couId + '&benchName=' + this.benchDetail.benchName + '&labName=' + this.benchDetail.labName 
+						+ '&week=' + week + '&courseTime=' + courseTime
+					})
+				},
+				feedback(couId, week, courseTime){
+					// 跳转到查看反馈页面，传入应该有的数据
+					uni.navigateTo({
+						url: './viewFeedback?labId=' + this.benchDetail.labId + '&benchId=' + this.benchDetail.bencId + '&couId='
+						+ couId + '&benchName=' + this.benchDetail.benchName + '&labName=' + this.benchDetail.labName 
+						+ '&week=' + week + '&courseTime=' + courseTime
 					})
 				}
+			},
+			onLoad(e){
+				this.baseURL = getApp().globalData.baseURL;
+				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息
+				// this.benchList.labId = e.labId;
+				// this.benchList.bencId = e.bencId;
+				this.getBenchList();
 			}
 		}
 </script>
 
 <style>
+.btn{
+	/* margin-bottom: 10rpx; */
+}
 </style>

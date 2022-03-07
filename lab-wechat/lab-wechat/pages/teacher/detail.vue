@@ -20,7 +20,7 @@
 					</view>
 					
 				</view>
-				<button type="default" @click="detail">查看</button>
+				<button type="default" style="width: 80%;" @click="detail">查看</button>
 			</view>
 		</view>
 	</view>
