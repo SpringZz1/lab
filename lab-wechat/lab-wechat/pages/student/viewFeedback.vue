@@ -1,38 +1,39 @@
 <template>
+	
+	<view>
 <!-- 	<div class="imagePart">
 		<image src="../../static/c1.png" mode=""></image>
-	</div>
-	<div>
-		<div class="container" v-for="info in infoList">
+	</div> -->
+<!-- 	<div>
+		<div class="container" v-for="info in feedbackList">
 			<div class="left">
-				<p>实验室号: {{info.lab_id}}</p>
-				<p>课程名: {{info.name}}</p>
+				<p>实验室号: {{info.labName}}</p>
+				<p>课程名: {{info.couName}}</p>
 			</div>
 			<div class="right">
-				<p>实验台号: {{info.id}}</p>
-				<p>上课时间: {{info.week}} {{info.course_iime}}</p>
+				<p>实验台号: {{info.benchName}}</p>
+				<p>上课时间: {{info.week}} {{info.courseTime}}</p>
 			</div>
 			<div class="footer">
 				<p>教师反馈: {{info.feedback}}</p>
 			</div>
 		</div>
 	</div> -->
-	<view>
-<!-- 		<uni-card  is-full="true" mode="feedbackList">
+		<uni-card  is-full="true" mode="feedbackList">
 			<div class= "imagePart">
-				<image src="../../static/c1.png" mode=""></image>
+				<image :src="feedbackList.photo"></image>
 			</div>
-			<div class="infoDetail">
-				<p>实验室号: {{feedbackList.lab_id}}</p>
-				<p>实验台号: {{feedbackList.id}}</p>
-				<p>课程名: {{feedbackList.name}}</p>
-				<p>上课时间: {{feedbackList.week}} {{feedbackList.course_iime}}</p>
+			<div class="container" >
+				<p>实验室号: {{feedbackList.labName}}</p>
+				<p>实验台号: {{feedbackList.benchName}}</p>
+				<p>课程名: {{feedbackList.couName}}</p>
+				<p>上课时间: {{feedbackList.week}} {{feedbackList.courseTime}}</p>
 				<p>教师反馈: {{feedbackList.feedback}}</p>
 			</div>
 			<div class="btn">
-				<button type="primary">确认</button>
+				<button type="primary" @click="back">确认</button>
 			</div>
-		</uni-card> -->
+		</uni-card>
 	</view>
 </template>
 
@@ -40,35 +41,84 @@
 	export default{
 		data(){
 			return{
+				baseURL:'',
 				feedbackList:{
+					// 实验室id
+					labId:'',
 					// 实验室号
 					labName:'',
+					// 实验台id
+					benchId:'',
 					// 实验台号
 					benchName:'',
 					// 课程名
 					couName:'',
+					// 课程id
+					couId:'',
 					// 课程时间
 					courseTime:'',
 					// 星期
 					week:'',
 					// 教师反馈
 					feedback:'',
-				}
+					// 保存图片链接
+					photo:'',
+				},
 			}
 		},
 		methods:{
-			
+			// 发送请求获得反馈信息
+			getFeedbackList(){
+				uni.request({
+					url: this.baseURL + 'student/getFeedback',
+					data:{
+						// labId: this.feedbackList.labId,
+						// benchId: this.feedbackList.benchId,
+						// couId: this.feedbackList.couId
+						labId: 1,
+						benchId: 1,
+						couId: 110
+					},
+					method:'POST',
+					success: res => {
+						console.log('here');
+						// console.log(res);
+						this.feedbackList = res.data.data;
+						// 图片链接格式转换
+						let str = this.feedbackList.photo + '';
+						// 替换好之后传给data,得到的格式为: http://124.222.93.17:8080/img/df12091d-d27-2022-03-03-19-27-53.png
+						str = str.replace('/root/elab/images/', 'img/');
+						this.feedbackList.photo = this.baseURL + str;
+					},
+					fail: res =>{
+						console.log('失败了');
+						// console.log(url);
+					}
+				})
+			},
+			// 点击确定按钮返回上一个页面
+			back(){
+				uni.navigateBack({
+					delta:1
+				})
+			}
 		},
 		onLoad(e) {
-			// console.log(e.labName);
+			// console.log(e);
+			this.baseURL = getApp().globalData.baseURL;
+			this.feedbackList.labId = e.labId;
+			this.feedbackList.benchId = e.benchId;
+			// console.log(e.benchId);
+			this.feedbackList.couId = e.couId;
 			this.feedbackList.labName = e.labName;
-			console.log(this.feedbackList.labName);
 			this.feedbackList.benchName = e.benchName;
 			this.feedbackList.couName = e.couName;
 			this.feedbackList.week = e.week;
-			// console.log(e.week);
 			this.feedbackList.courseTime = e.courseTime;
-			// console.log(this.feedbackList.courseTime);
+			console.log(this.feedbackList.couId);
+			console.log(this.feedbackList.benchId);
+			console.log(this.feedbackList.labId);
+			this.getFeedbackList();
 		}
 	}
 </script>
@@ -80,7 +130,6 @@
 		border: 1px solid red;
 		/* background-color: red; */
 	}
-	.infoDetail{}
 	.btn{
 		text-align: center;
 	}

@@ -35,6 +35,8 @@
 	export default{
 		data(){
 			return{
+				// 保存图片临时地址
+				imgURL:{},
 				// 表单数据
 				formData:{
 					name:'',
@@ -46,8 +48,9 @@
 					comment:'',
 					benchId:'',
 					benchName:'',
-					week:'123',
-					courseTime:''
+					week:'',
+					courseTime:'',
+					img:''
 				},
 				rules:{
 					// 对name字段必须验证
@@ -76,12 +79,16 @@
 		},
 		methods:{
 			uploadImage(){
+				let that = this;
 				uni.chooseImage({
 					count: 1,
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album','camera'], //从相册选择、摄像头
 					success:function(res){
-						console.log(JSON.stringify(res.tempFilePaths));
+						that.formData.img = res.tempFilePaths;
+						console.log(that.formData.img);
+						// console.log(this.formData.img);
+						// console.log(JSON.stringify(res.tempFilePaths));
 					}
 				})
 			}

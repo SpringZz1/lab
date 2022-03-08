@@ -27,14 +27,20 @@
 					{
 						// 实验桌编号
 						id:'',
-						// 实验室编号
-						labId:'',
 						// 课程名称
 						name:'',
 						// 课程时间
 						time:'',
 						// 课程星期
-						week:''
+						week:'',
+
+					},
+					// 接受上一个页面传送进来的参数
+					inputReceive:{
+						// 实验室编号
+						labId:'',
+						// 实验桌id
+						benchId:''
 					},
 					benchDetail:{
 						
@@ -45,15 +51,17 @@
 				// 获得实验室信息
 				getBenchList(){
 					uni.request({
-						// url: this.baseURL + 'student/GetCourseDetailByLabId?labId=' + this.benchList.labId + '&benchId=' + this.benchList.benchList,
-						url: this.baseURL + 'student/GetCourseDetailByLabId?labId=' + '17' + '&benchId=' + '8',
+						url: this.baseURL + 'student/GetCourseDetailByLabId?labId=' + this.inputReceive.labId + '&benchId=' + this.inputReceive.benchId,
+						// url: this.baseURL + 'student/GetCourseDetailByLabId?labId=' + '17' + '&benchId=' + '8',
 						method:'POST',
 						success: res => {
 							// console.log(res);
 							this.benchList = res.data.data;
 							this.benchDetail = res.data.detail;
-							// console.log(this.benchDetail);
-							// this.feedbackList = res.data.data;
+							// this.benchList.benchId = res.data.detail.benchId;
+							// console.log(this.benchList.benchId);
+							// console.log(this.benchList.benchId);
+							// console.log(res.data.data);
 						}
 					})
 				},
@@ -62,7 +70,7 @@
 					// console.log(this.benchDetail.labId);
 					// console.log(this.benchDetail.benchId);
 					uni.navigateTo({
-						url: './uploadInfo?labId=' + this.benchDetail.labId + '&benchId=' + this.benchDetail.bencId + '&couId=' 
+						url: './uploadInfo?labId=' + this.inputReceive.labId + '&benchId=' + this.inputReceive.benchId + '&couId=' 
 						+ couId + '&benchName=' + this.benchDetail.benchName + '&labName=' + this.benchDetail.labName 
 						+ '&week=' + week + '&courseTime=' + courseTime
 					})
@@ -70,7 +78,7 @@
 				feedback(couId, week, courseTime){
 					// 跳转到查看反馈页面，传入应该有的数据
 					uni.navigateTo({
-						url: './viewFeedback?labId=' + this.benchDetail.labId + '&benchId=' + this.benchDetail.bencId + '&couId='
+						url: './viewFeedback?labId=' + this.inputReceive.labId + '&benchId=' + this.inputReceive.benchId + '&couId='
 						+ couId + '&benchName=' + this.benchDetail.benchName + '&labName=' + this.benchDetail.labName 
 						+ '&week=' + week + '&courseTime=' + courseTime
 					})
@@ -78,9 +86,11 @@
 			},
 			onLoad(e){
 				this.baseURL = getApp().globalData.baseURL;
-				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息
-				// this.benchList.labId = e.labId;
-				// this.benchList.bencId = e.bencId;
+				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息, 先写死测试
+				this.inputReceive.labId = '17';
+				this.inputReceive.benchId = '8';
+				// this.inputReceive.labId = e.labId;
+				// this.inputReceive.bencId = e.bencId;
 				this.getBenchList();
 			}
 		}
