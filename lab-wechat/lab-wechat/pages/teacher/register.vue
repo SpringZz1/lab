@@ -58,7 +58,7 @@
 				uni.getUserProfile({
 					desc:'weixin',
 					success:res=>{
-						console.log('用户信息',res.userInfo);
+						// console.log('用户信息',res.userInfo);
 						// 保存用户信息
 						this.registerInput.nickName = res.userInfo.nickName;
 						this.registerInput.avatarUrl = res.userInfo.avatarUrl;

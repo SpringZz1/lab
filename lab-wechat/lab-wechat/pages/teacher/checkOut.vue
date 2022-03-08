@@ -4,20 +4,21 @@
 		title="实验室信息"
 		:is-shadow="true" 
 	>
-		<view>
+		<view v-if="feedbackList">
 			<p>实验室: {{feedbackList.labName}}</p>
 			<p>实验台号: {{feedbackList.benchName}}</p>
 			<p>课程: {{feedbackList.couName}}</p>
 		</view>
 		<view class="image-box">
-			<image src="../../static/c1.png" mode=""></image>
+			<image :src="feedbackList.photo" mode=""></image>
 		</view>
 	</uni-card>
 	
 	<uni-card
 	title="学生信息"
+	
 	>
-	<view>
+	<view v-if="feedbackList">
 		<p>学号: {{feedbackList.stuId}}</p>
 		<p>姓名: {{feedbackList.stuName}}</p>
 		<p>备注: {{feedbackList.comment}}</p>
@@ -94,21 +95,39 @@
 		methods:{
 			// 发送请求获得数据
 			getFeedbackList(){
+				let self = this;
 				uni.request({
-					url: this.baseURL + 'teacher/lab/check/',
+					url: self.baseURL + 'teacher/lab/check/',
 					data:{
 						// 单元测试，先写死进行测试
-						labId: 1,
-						benchId: 1,
-						couId: 110
-						// labId: this.inputReceive.labId,
-						// benchId: this.inputReceive.benchId,
-						// couId: this.inputReceive.couId
+						// labId: 1,
+						// benchId: 1,
+						// couId: 110
+						labId: self.inputReceive.labId,
+						benchId: self.inputReceive.benchId,
+						couId: self.inputReceive.couId
 					},
 					method:'POST',
 					success: res => {
-						console.log(res);
-						this.feedbackList = res.data.data;
+						const data = [];
+						// console.log(res.data.data.photo);
+						// 对null值进行转换，转换成string类型
+						// 如果photo为null，则选一张图片作为默认图片使用
+						if(res.data.data == null){
+							self.feedbackList = '';
+							// res.data.data.photo = 'img/df12091d-d27-2022-03-03-19-27-53.png';
+							// console.log(res.data.data[i].photo);
+						}else{
+						let str = res.data.data.photo + '';
+						// console.log(str);
+						// // 替换好之后传给data,得到的格式为: http://124.222.93.17:8080/img/df12091d-d27-2022-03-03-19-27-53.png
+						str = str.replace('/root/elab/images/', 'img/');
+						// console.log(str);
+						data.push(self.baseURL + str);
+						// data.push( self.baseURL + str);
+						self.feedbackList = res.data.data;
+						self.feedbackList.photo = data;
+						}
 					}
 				})
 			},
@@ -120,32 +139,47 @@
 			},
 			confirm(value){
 				// 输入框的值
-				console.log(value)
+				// console.log(value)
 				// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
 				// 不通过则发送请求
 				uni.request({
 					url: this.baseURL + 'teacher/lab/checkFeedback',
 					data:{
 						// 这里进行单元测试，先写死进行测试
-						labId: 1,
-						benchId: 1,
-						couId: 110,
+						// labId: 1,
+						// benchId: 1,
+						// couId: 110,
+						// status: 0,
+						// comment: value
+						labId: this.inputReceive.labId,
+						benchId: this.inputReceive.benchId,
+						couId: this.inputReceive.couId,
 						status: 0,
 						comment: value
-						// labId: this.inputReceive.labId,
-						// benchId: this.inputReceive.benchId,
-						// couId: this.inputReceive.couId
-						// status: 0
-						// comment: value
 					},
 					method:'POST',
 					success: res => {
 						console.log(res);
 						// 点击按钮后跳转到上一个页面
-						uni.navigateBack({
-							// 回到上一个页面
-							delta: 1
-						})
+						if(res.data.code!==200){
+							uni.showToast({
+								title:'验收操作失败!',
+								icon:'error',
+								duration:2000
+							})
+						}else{
+							// 请求成功
+							uni.showToast({
+								title:'验收成功',
+								icon:'none',
+								duration:2000
+							})
+							// 跳转到上一个页面
+							uni.navigateBack({
+								// 回到上一个页面
+								delta: 1
+							})
+						}
 					}
 				})
 				// ...
@@ -157,14 +191,15 @@
 					url: this.baseURL + 'teacher/lab/checkFeedback',
 					data:{
 						// 这里进行单元测试，先写死进行测试
-						labId: 1,
-						benchId: 1,
-						couId: 110,
+						// labId: 1,
+						// benchId: 1,
+						// couId: 110,
+						// status: 1,
+						labId: this.inputReceive.labId,
+						benchId: this.inputReceive.benchId,
+						couId: this.inputReceive.couId,
 						status: 1,
-						// labId: this.inputReceive.labId,
-						// benchId: this.inputReceive.benchId,
-						// couId: this.inputReceive.couId
-						// status: 1
+						comment: '通过'
 					},
 					method: 'POST',
 					success: res => {
@@ -197,6 +232,7 @@
 		onLoad(e) {
 			this.baseURL = getApp().globalData.baseURL;
 			// 上个页面传给这个页面查看详情，上个页面传进来三个参数,labId,benchId,couId
+			console.log(e);
 			this.inputReceive.labId = e.labId;
 			this.inputReceive.benchId = e.benchId;
 			this.inputReceive.couId = e.couId;

@@ -6,8 +6,8 @@
 				<p>时间: {{bench.week}},{{bench.courseTime}}</p>
 			</div>
 			<div class = "btn">
-				<span><button type="default" size="mini" style="float: left;" @click="uploadInfo(bench.couId, bench.week, bench.courseTime)"> 扫码拍照</button></span>
-				<span><button type="default" size="mini" style="float: right;" @click="feedback(bench.couId, bench.week, bench.courseTime)"> 查看反馈</button></span>
+				<span><button type="default" size="mini" style="float: left;" @click="uploadInfo(bench.couId, bench.week, bench.courseTime,bench.courseName)"> 扫码拍照</button></span>
+				<span><button type="default" size="mini" style="float: right;" @click="feedback(bench.couId, bench.week, bench.courseTime,bench.courseName)"> 查看反馈</button></span>
 			</div>
 			
 			
@@ -65,30 +65,30 @@
 						}
 					})
 				},
-				uploadInfo(couId, week, courseTime){
+				uploadInfo(couId, week, courseTime, couName){
 					// 把必要信息传入拍照页面
 					// console.log(this.benchDetail.labId);
 					// console.log(this.benchDetail.benchId);
 					uni.navigateTo({
 						url: './uploadInfo?labId=' + this.inputReceive.labId + '&benchId=' + this.inputReceive.benchId + '&couId=' 
 						+ couId + '&benchName=' + this.benchDetail.benchName + '&labName=' + this.benchDetail.labName 
-						+ '&week=' + week + '&courseTime=' + courseTime
+						+ '&week=' + week + '&courseTime=' + courseTime + '&couName=' + couName
 					})
 				},
-				feedback(couId, week, courseTime){
+				feedback(couId, week, courseTime, couName){
 					// 跳转到查看反馈页面，传入应该有的数据
 					uni.navigateTo({
 						url: './viewFeedback?labId=' + this.inputReceive.labId + '&benchId=' + this.inputReceive.benchId + '&couId='
 						+ couId + '&benchName=' + this.benchDetail.benchName + '&labName=' + this.benchDetail.labName 
-						+ '&week=' + week + '&courseTime=' + courseTime
+						+ '&week=' + week + '&courseTime=' + courseTime + '&couName=' + couName
 					})
 				}
 			},
 			onLoad(e){
 				this.baseURL = getApp().globalData.baseURL;
 				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息, 先写死测试
-				this.inputReceive.labId = '17';
-				this.inputReceive.benchId = '8';
+				this.inputReceive.labId = '1';
+				this.inputReceive.benchId = '1';
 				// this.inputReceive.labId = e.labId;
 				// this.inputReceive.bencId = e.bencId;
 				this.getBenchList();
