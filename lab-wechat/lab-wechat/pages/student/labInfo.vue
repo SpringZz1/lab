@@ -55,7 +55,7 @@
 						// url: this.baseURL + 'student/GetCourseDetailByLabId?labId=' + '17' + '&benchId=' + '8',
 						method:'POST',
 						success: res => {
-							// console.log(res);
+							console.log(res);
 							this.benchList = res.data.data;
 							this.benchDetail = res.data.detail;
 							// this.benchList.benchId = res.data.detail.benchId;
@@ -86,9 +86,10 @@
 			},
 			onLoad(e){
 				this.baseURL = getApp().globalData.baseURL;
+				// console.log(e);
 				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息, 先写死测试
-				this.inputReceive.labId = '1';
-				this.inputReceive.benchId = '1';
+				this.inputReceive.labId = e.labId;
+				this.inputReceive.benchId = e.benchId;
 				// this.inputReceive.labId = e.labId;
 				// this.inputReceive.bencId = e.bencId;
 				this.getBenchList();

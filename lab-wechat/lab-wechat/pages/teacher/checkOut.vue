@@ -95,6 +95,8 @@
 		methods:{
 			// 发送请求获得数据
 			getFeedbackList(){
+				let pages = getCurrentPages(); // 当前页面
+				let beforePage = pages[pages.length - 2]; // 上一页
 				let self = this;
 				uni.request({
 					url: self.baseURL + 'teacher/lab/check/',
@@ -115,6 +117,24 @@
 						// 如果photo为null，则选一张图片作为默认图片使用
 						if(res.data.data == null){
 							self.feedbackList = '';
+							uni.showToast({
+								title:'学生还未完成扫码拍照',
+								icon:'none',
+								duration:2000
+							});
+							setTimeout(function(){
+								uni.navigateBack({
+								    success: function() {
+										beforePage.onLoad(self.inputReceive);
+								        // beforePage.onLoad(); // 执行上一页的onLoad方法
+								    }
+								});
+
+								// // 跳转到上一个页面
+								// uni.navigateBack({
+								// 	delta: 1
+								// })
+							},2000)
 							// res.data.data.photo = 'img/df12091d-d27-2022-03-03-19-27-53.png';
 							// console.log(res.data.data[i].photo);
 						}else{
@@ -138,12 +158,15 @@
 				this.$refs.popup.close()
 			},
 			confirm(value){
+				let self = this;
+				let pages = getCurrentPages(); // 当前页面
+				let beforePage = pages[pages.length - 2]; // 上一页
 				// 输入框的值
 				// console.log(value)
 				// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
 				// 不通过则发送请求
 				uni.request({
-					url: this.baseURL + 'teacher/lab/checkFeedback',
+					url: self.baseURL + 'teacher/lab/checkFeedback',
 					data:{
 						// 这里进行单元测试，先写死进行测试
 						// labId: 1,
@@ -151,9 +174,9 @@
 						// couId: 110,
 						// status: 0,
 						// comment: value
-						labId: this.inputReceive.labId,
-						benchId: this.inputReceive.benchId,
-						couId: this.inputReceive.couId,
+						labId: self.inputReceive.labId,
+						benchId: self.inputReceive.benchId,
+						couId: self.inputReceive.couId,
 						status: 0,
 						comment: value
 					},
@@ -173,12 +196,15 @@
 								title:'验收成功',
 								icon:'none',
 								duration:2000
-							})
-							// 跳转到上一个页面
-							uni.navigateBack({
-								// 回到上一个页面
-								delta: 1
-							})
+							});
+							setTimeout(function(){
+								// 跳转到上一个页面
+								uni.navigateBack({
+									success: function (){
+										beforePage.onLoad(self.inputReceive);
+									}
+								})
+							},2000)
 						}
 					}
 				})
@@ -186,18 +212,21 @@
 				this.$refs.popup.close()
 			},
 			passCheck(){
+				let self = this;
+				let pages = getCurrentPages(); // 当前页面
+				let beforePage = pages[pages.length - 2]; // 上一页
 				// 点击通过按钮直接将status改变为1，即通过, 并且成功不需要写回复，点击通过即可
 				uni.request({
-					url: this.baseURL + 'teacher/lab/checkFeedback',
+					url: self.baseURL + 'teacher/lab/checkFeedback',
 					data:{
 						// 这里进行单元测试，先写死进行测试
 						// labId: 1,
 						// benchId: 1,
 						// couId: 110,
 						// status: 1,
-						labId: this.inputReceive.labId,
-						benchId: this.inputReceive.benchId,
-						couId: this.inputReceive.couId,
+						labId: self.inputReceive.labId,
+						benchId: self.inputReceive.benchId,
+						couId: self.inputReceive.couId,
 						status: 1,
 						comment: '通过'
 					},
@@ -221,7 +250,9 @@
 							// 跳转到上一个页面
 							uni.navigateBack({
 								// 回到上一个页面
-								delta: 1
+								success: function(){
+									beforePage.onLoad(self.inputReceive);
+								}
 							})
 						}
 						
@@ -230,6 +261,7 @@
 			}
 		},
 		onLoad(e) {
+			// this.feedbackList = {};
 			this.baseURL = getApp().globalData.baseURL;
 			// 上个页面传给这个页面查看详情，上个页面传进来三个参数,labId,benchId,couId
 			console.log(e);

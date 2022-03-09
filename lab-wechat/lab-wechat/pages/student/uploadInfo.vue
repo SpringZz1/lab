@@ -60,8 +60,15 @@
 					benchName:'',
 					week:'',
 					courseTime:'',
-					// img:[],
+					// 用来判断学生是不是第一次登录的flag，默认为1，如果找到学生信息则改为0
+					firstLogin:1,
+					// code换取openId
+					openId:''
 				},
+				// 上传图片路径
+				upImgGroup: [],
+				// code:'',
+				
 				rules:{
 					// 对name字段必须验证
 					name:{
@@ -85,11 +92,54 @@
 						}]
 					}
 				},
-				// 上传图片路径
-				upImgGroup: []
 			}
 		},
 		methods:{
+			getCode(){
+				let self = this;
+				uni.login({
+					provider:'weixin',
+					success: function(loginRes) {
+						// console.log(loginRes);
+						// 保存到formData中
+						// self.code = loginRes.code;
+						self.formData.code = loginRes.code;
+						uni.request({
+							// url: self.baseURL + 'student/getByOpenId',
+							url: self.baseURL +'student/getByOpenId',
+							data:{
+								code: loginRes.code
+							},
+							method:'POST',
+							success: res => {
+								// console.log(res);
+								// 如果是未注册的学生
+								if(res.data.code==109){
+									self.formData.firstLogin = 1;
+									console.log('未注册');
+								}else if(res.data.code==200){
+									// 如果是注册过的学生
+									self.formData.firstLogin = 0;
+									console.log('已注册');
+									// self.formData = res.data.data;
+									self.formData.name = res.data.data.name;
+									self.formData.stuId = res.data.data.stuId;
+									self.formData.className = res.data.data.className;
+									console.log(res.data.data);
+									// console.log(self.formData);
+									// console.log(self.formData.firstLogin);
+									// console.log(loginRes.code);
+								}
+								// console.log(self.formData.firstLogin);
+							},
+							fail: (res) => {
+								// console.log(self.baseURL);
+								console.log(res);
+							}
+						})
+					}
+				})
+			},
 			ChooseImage() {
 				var self = this;
 				uni.chooseImage({
@@ -98,14 +148,8 @@
 					// 只允许一张
 					count: 1,
 					success: (res) => {
-						// let images = res.tempFilePaths;
-						// console.log(res.tempFilePaths[0]);
 						self.upImgGroup = res.tempFilePaths;
-						console.log(self.upImgGroup);
-						// for (let i = 0; i < images.length; i++) {
-
-						// }
-
+						// 点击上传图片后开始发送code请求
 					}
 				})
 			},
@@ -127,51 +171,40 @@
 			uploadFile(){
 				let self = this;
 				uni.uploadFile({
-					url: 'http://124.222.93.17:8080/student/check',
+					// url: 'http://10.133.64.6:8080/student/check',
+					url: self.baseURL + 'student/check',
 					header: {
 						'content-type': 'multipart/form-data'
 					},
 					name:'photo',
+					// 上传的图片
 					filePath: self.upImgGroup[0],
-					// files: self.upImgGroup[0],
-					// files: '../../static/c1.png',
+					// 除了图片的其他信息
 					formData: self.formData,
-					// formData:{
-					// 	photo: self.upImgGroup[0]
-					// 	stuId: self.formData.stuId,
-					// 	name: self.formData.name,
-					// 	className: self.formData.className,
-					// 	labId: self.formData.labId,
-					// 	benchId: self.formData.benchId,
-					// 	comment: self.formData.comment,
-					// 	couId: self.formData.couId,
-					// 	labName: self.formData.labName,
-					// 	benchName: self.formData.benchName,
-					// 	couName: self.formData.couName,
-					// 	courseTime: self.formData.courseTime,
-					// 	week: self.formData.week
-					// },
 					success: res =>{
 						console.log('success');
-						console.log(res.data);
-						uni.redirectTo({
-							url:'./labInfo'
-						})
-						// if(res){
-						// 	// 上传信息失败
-						// 	uni.showToast({
-						// 		title:'提交失败，请填写完整的信息!',
-						// 		icon: 'none',
-						// 		duration:2000
-						// 	})
-						// }else{
-						// 	// 上传信息成功
-						// 	uni.showToast({
-						// 		title:'提交成功',
-						// 		icon:'success',
-						// 		duration: 2000
-						// 	})
-						// }
+						let info = JSON.parse(res.data);
+						// console.log(JSON.parse(res.data));
+						if(info.code!==200){
+							// 上传信息失败
+							uni.showToast({
+								title:'提交失败，请填写完整的信息!',
+								icon: 'none',
+								duration:2000
+							})
+						}else{
+							// 上传信息成功
+							uni.showToast({
+								title:'提交成功',
+								icon:'success',
+								duration: 2000
+							});
+							setTimeout(function(){
+								uni.redirectTo({
+									url:'./labInfo?labId=' + self.formData.labId + '&benchId=' + self.formData.benchId
+								})
+							})
+						}
 						// console.log(res);
 					},
 					fail: (res) =>{
@@ -182,34 +215,15 @@
 				})
 			},
 			back(){
-				uni.redirectTo({
-					url:'./labInfo'
-				})
+				uni.navigateBack()
 			}
-			// ViewImage(i, upImgGroup) {
-			// 	let imgurl = []
-			// 	upImgGroup.forEach(item => imgurl.push(item.uri))
-			// 	uni.previewImage({
-			// 		urls: imgurl,
-			// 		current: upImgGroup[i].uri
-			// 	});
-			// }
 		},
 		onLoad(e) {
-			// this.baseURL = getApp().globalData.baseURL;
-			// this.formData.couId = e.couId;
-			// this.formData.labName = e.labName;
-			// // console.log(e.couName);
-			// this.formData.couName = e.couName;
-			// this.formData.stuId = e.stuId;
-			// this.formData.labId = e.labId;
-			// this.formData.id = e.id;
-			// this.formData.benchId = e.benchId;
-			// this.formData.benchName = e.benchName;
-			// this.formData.week = e.week;
-			// this.formData.courseTime = e.courseTime;
-			this.formData = e;
-			console.log(this.formData.labName);
+			this.baseURL = getApp().globalData.baseURL;
+			this.getCode();
+			this.formData.labName = e.labName;
+			this.formData.benchName = e.benchName;
+			
 		}
 	}
 </script>

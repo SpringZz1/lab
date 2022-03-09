@@ -88,7 +88,7 @@
 
     <!-- 添加实验桌 -->
     <el-dialog
-        title="添加实验桌子"
+        title="添加实验桌"
         :visible.sync="addBenchVisible"
         width="50%"
         >
@@ -123,6 +123,28 @@
     </span>
     </el-dialog>
 
+    <!-- 修改实验桌信息 -->
+        <el-dialog
+        title="修改信息"
+        :visible.sync="updateVisible"
+        width="50%"
+        >
+        <!-- 内容区域 -->
+        <el-form :model="updateBenchList" :rules="updateBenchListFormRul" ref="updateBenchListFormRel" label-width="auto">
+            <el-form-item label="实验桌编号" >
+                <el-input v-model="updateBenchList.benchName" ></el-input>
+            </el-form-item>
+            <el-form-item label="备注" prop="phone">
+                <el-input v-model="updateBenchList.comment" ></el-input>
+            </el-form-item>
+        </el-form>
+
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="updateVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateBenchButton">确 定</el-button>
+    </span>
+    </el-dialog>
+
 </div>
 </template>
 
@@ -150,7 +172,18 @@ export default {
             // 保存实验室id和名字
             labList:[],
             // 添加实验桌数据保存
-            addBenchList:[]
+            addBenchList:[],
+            // 修改实验桌信息
+            updateVisible:false,
+            // 修改实验室信息保存, 提供回显
+            updateBenchList:{},
+            // 实验桌信息修改规则
+            updateBenchListFormRul:{
+                benchName:[
+                    { required: true, message: '请输入姓名', trigger: 'blur' },
+                    { min: 3, max: 10, message: '长度在3到10个字符', trigger: 'blur'}
+                ]
+            }
         }
     },
     methods:{
@@ -231,12 +264,32 @@ export default {
                     })
             });
         },
-        // 修改实验桌信息
+        // 查询这个id的实验桌的内容
         updateBench(row){
             // 弹窗显示
             this.updateVisible = true;
+            // 根据实验桌id获得当前实验桌信息
+            this.$http.get(`admin/bench/getById/${row.id}`)
+            .then(res=>{
+                console.log(res.data.data);
+                this.updateBenchList = res.data.data;
+                console.log(this.updateBenchList);
+            })
+        },
+        // 根据id修改这个id下面的实验桌的内容
+        updateBenchButton(){
+            this.$http.post(`/admin/bench/update`,{id: this.updateBenchList.id, benchName: this.updateBenchList.benchName, comment: this.updateBenchList.comment})
+            .then(res => {
+                console.log(res);
+                if(res.data.code!==200){
+                    this.$message.error('更新实验桌信息失败');
+                }else{
+                    this.$message.error('更新实验桌信息成功');
+                    this.updateVisible = false;
+                    this.getBenchList()
+                }
 
-            // this.$http.get()
+            })
         },
         // 添加实验桌
         addBench(){

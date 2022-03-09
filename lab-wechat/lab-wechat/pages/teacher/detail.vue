@@ -76,8 +76,9 @@
 					success: res => {
 						console.log(res);
 						// this.benchList = res.data.data;
-						self.labId = res.data.data[0].labId;
-						// console.log(this.benchList);
+						// self.labId = res.data.data[0].labId;
+						console.log('111');
+						console.log(res.data.data);
 						// 遍历将图片链接保存进imgUrls中
 						const data = [];
 						// 保存实验桌id
@@ -105,7 +106,7 @@
 						self.benchList.photo.urls = data;
 						self.benchList.photo.benchId = bench;
 						self.benchList.photo.status = status;
-						console.log(self.benchList.photo.status[0]);
+						console.log(self.benchList);
 						// console.log('111');
 						// console.log(self.benchList.photo.urls);
 						// this.imgUrls.push(bench);
@@ -116,7 +117,7 @@
 			checkOut(index){
 				// 点击图片进行相关信息页的跳转, 同时携带数据进入checkOut界面, index指向这个照片所指向的benchId的index
 				let benchId = this.benchList.photo.benchId[index];
-				uni.redirectTo({
+				uni.navigateTo({
 					url: './checkOut?labId=' + this.benchList.labId + '&benchId=' + benchId + '&couId=' + this.benchList.couId,
 				})
 				// uni.request({
@@ -132,12 +133,6 @@
 				// 	}
 				// })
 			},
-			detail(){
-
-				// console.log(this.imgUrls.urls);
-				// let self = this;
-				// console.log(`${this.benchList.labId}`);
-			}
 		},
 		onLoad(e){
 			this.baseURL = getApp().globalData.baseURL;

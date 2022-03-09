@@ -1,24 +1,6 @@
 <template>
 	
 	<view>
-<!-- 	<div class="imagePart">
-		<image src="../../static/c1.png" mode=""></image>
-	</div> -->
-<!-- 	<div>
-		<div class="container" v-for="info in feedbackList">
-			<div class="left">
-				<p>实验室号: {{info.labName}}</p>
-				<p>课程名: {{info.couName}}</p>
-			</div>
-			<div class="right">
-				<p>实验台号: {{info.benchName}}</p>
-				<p>上课时间: {{info.week}} {{info.courseTime}}</p>
-			</div>
-			<div class="footer">
-				<p>教师反馈: {{info.feedback}}</p>
-			</div>
-		</div>
-	</div> -->
 		<uni-card  
 		title="照片"
 		is-full="true" 
@@ -39,7 +21,7 @@
 				<p>教师反馈: {{feedbackList.feedback}}</p>
 			</view>
 		</uni-card>
-		<div class="btn">
+		<div class="btn" v-if="feedbackList">
 			<button type="primary" @click="back">确认</button>
 		</div>
 	</view>
@@ -74,11 +56,17 @@
 					photo:'',
 				},
 				imgURL:'',
+				inputReceive:{
+					
+				}
 			}
 		},
 		methods:{
 			// 发送请求获得反馈信息
 			getFeedbackList(){
+				let self = this;
+				let pages = getCurrentPages(); // 当前页面
+				let beforePage = pages[pages.length - 2]; // 上一页
 				uni.request({
 					url: this.baseURL + 'student/getFeedback',
 					data:{
@@ -99,8 +87,21 @@
 							// res.data.data.photo = 'img/df12091d-d27-2022-03-03-19-27-53.png';
 							// console.log(res.data.data[i].photo);
 							// this.feedbackList.photo = res.data.data.photo;
-							this.feedbackList = '';
-							console.log(this.feedbackList);
+							self.feedbackList = '';
+							uni.showToast({
+								title:'此实验桌暂无拍照信息，请先完成扫码拍照',
+								icon:'none',
+								duration:2000
+							});
+							// 设置延迟跳转
+							setTimeout(function(){
+								uni.navigateBack({
+									success: function (){
+										// beforePage.onLoad(self.inputReceive);
+									}
+								})
+							},2000);
+
 						}else{
 							// 图片链接格式转换
 							res.data.data.photo = res.data.data.photo + '';
@@ -132,6 +133,10 @@
 		onLoad(e) {
 			// console.log(e);
 			this.baseURL = getApp().globalData.baseURL;
+			console.log(e.labId);
+			console.log(e.benchId);
+			this.inputReceive.labId = e.labId;
+			this.inputReceive = e.benchId;
 			// this.feedbackList.labId = e.labId;
 			// this.feedbackList.benchId = e.benchId;
 			// // console.log(e.benchId);
@@ -154,7 +159,7 @@
 	.imagePart{
 		height: 40%;
 		width: 100%;
-		border: 1px solid red;
+		/* border: 1px solid red; */
 		/* background-color: red; */
 	}
 	.btn{

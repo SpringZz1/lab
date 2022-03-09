@@ -1,11 +1,16 @@
 {
 	"pages": [
-		
-			// 创建项目系统自带index, 用来判断是教师角色登录还是学生角色登录
+		// 创建项目系统自带index, 用来判断是教师角色登录还是学生角色登录
 		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path":"pages/student/scan",
+			"style":{
+				"navigationBarTitleText":"扫码"
 			}
 		},
 		// 空白页跳转判断
