@@ -182,7 +182,7 @@ export default {
         getCourseList(){
             this.$http.get(`admin/course/list`)
             .then(res=>{
-                // console.log(res);
+                console.log(res);
                 if(res.data.code!==200){
                     this.$message.error('请求课程信息失败');
                 }else{

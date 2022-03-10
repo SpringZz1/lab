@@ -29,16 +29,19 @@
 						// 这个实验室下面的课程信息，array格式
 						list:[]
 					},
+					id:''
 				}
 			},
 			methods:{
 				// 得到教师id向后台发送请求渲染卡片
 				getLabList(){
+					// let temp = this.baseURL + 'lab/detail/list/' + this.labList.id;
 					uni.request({
-						url: this.baseURL + 'lab/detail/list/' + this.labList.id,
+						url: this.baseURL + 'lab/detail/list/' + this.id,
 						method:'GET',
 						success: res => {
-							// console.log(res);
+							// console.log(temp);
+							console.log(res);
 							// 如果获取失败
 							if(res.data.code!==200){
 								uni.showToast({
@@ -54,6 +57,7 @@
 								icon:'none'
 							})
 							this.labList = res.data.data;
+							uni.stopPullDownRefresh();
 							console.log('here');
 							console.log(this.labList);
 							}
@@ -78,6 +82,11 @@
 				this.baseURL = getApp().globalData.baseURL;
 				// 保存上个页面传送的教师id
 				this.labList.id = e.id;
+				this.id = e.id;
+				this.getLabList();
+			},
+			onPullDownRefresh(){
+				this.baseURL = getApp().globalData.baseURL;
 				this.getLabList();
 			}
 		}

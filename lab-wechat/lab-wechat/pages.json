@@ -24,7 +24,8 @@
 		{
 			"path":"pages/teacher/labInfo",
 			"style":{
-				"navigationBarTitleText":"查看所负责的实验室"
+				"navigationBarTitleText":"查看所负责的实验室",
+				"enablePullDownRefresh": true //下拉刷新
 			}
 		},
 		// 学生查看反馈
@@ -71,6 +72,7 @@
 		}
     ],
 	"globalStyle": {
+		"enablePullDownRefresh": true, //下拉刷新
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",

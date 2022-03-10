@@ -67,8 +67,8 @@
 				},
 				// 上传图片路径
 				upImgGroup: [],
-				// code:'',
-				
+				// 用来暂时存储上一个页面的数据
+				receiveInput:{},
 				rules:{
 					// 对name字段必须验证
 					name:{
@@ -115,17 +115,27 @@
 								// console.log(res);
 								// 如果是未注册的学生
 								if(res.data.code==109){
-									self.formData.firstLogin = 1;
-									console.log('未注册');
-								}else if(res.data.code==200){
-									// 如果是注册过的学生
-									self.formData.firstLogin = 0;
-									console.log('已注册');
-									// self.formData = res.data.data;
+									self.formData = self.receiveInput;
 									self.formData.name = res.data.data.name;
 									self.formData.stuId = res.data.data.stuId;
 									self.formData.className = res.data.data.className;
-									console.log(res.data.data);
+									self.formData.firstLogin = 1;
+									console.log(self.formData);
+									console.log('未注册');
+								}else if(res.data.code==200){
+									console.log('已注册');
+									// self.formData = res.data.data;
+									console.log('2222');
+									self.formData = self.receiveInput;
+									self.formData.name = res.data.data.name;
+									self.formData.stuId = res.data.data.stuId;
+									self.formData.className = res.data.data.className;
+									// 如果是注册过的学生
+									self.formData.firstLogin = 0;
+									console.log(self.formData);
+									// console.log(res.data.data);
+									// console.log('11111');
+									// console.log(res);
 									// console.log(self.formData);
 									// console.log(self.formData.firstLogin);
 									// console.log(loginRes.code);
@@ -143,7 +153,10 @@
 			ChooseImage() {
 				var self = this;
 				uni.chooseImage({
-					sourceType: ["camera", "album"],
+					// 默认两种都可以
+					// sourceType: ["camera", "album"],
+					// 这里只允许相机上传照片
+					sourceType: ["camera"],
 					sizeType: ['original', 'compressed'],
 					// 只允许一张
 					count: 1,
@@ -173,6 +186,7 @@
 				uni.uploadFile({
 					// url: 'http://10.133.64.6:8080/student/check',
 					url: self.baseURL + 'student/check',
+					// url: 'http://124.222.93.17:8080/student/check',
 					header: {
 						'content-type': 'multipart/form-data'
 					},
@@ -183,8 +197,10 @@
 					formData: self.formData,
 					success: res =>{
 						console.log('success');
+						// console.log(self.formData.firstLogin);
+						console.log(self.formData);
 						let info = JSON.parse(res.data);
-						// console.log(JSON.parse(res.data));
+						console.log(JSON.parse(res.data));
 						if(info.code!==200){
 							// 上传信息失败
 							uni.showToast({
@@ -203,7 +219,7 @@
 								uni.redirectTo({
 									url:'./labInfo?labId=' + self.formData.labId + '&benchId=' + self.formData.benchId
 								})
-							})
+							},2000)
 						}
 						// console.log(res);
 					},
@@ -220,10 +236,17 @@
 		},
 		onLoad(e) {
 			this.baseURL = getApp().globalData.baseURL;
-			this.getCode();
-			this.formData.labName = e.labName;
-			this.formData.benchName = e.benchName;
+			console.log(e);
+			this.receiveInput = e;
+			// this.formData = e;
 			
+			console.log('1111');
+			console.log(this.formData);
+			// console.log(this.formData);
+			this.getCode();
+			// this.formData.labName = e.labName;
+			// this.formData.benchName = e.benchName;
+			// this.formData = e;
 		}
 	}
 </script>
@@ -248,7 +271,7 @@
 	.close {
 		position: absolute;
 		right: 0;
-		background-color: rgba(0, 0, 0, .4);
+		background-color: rgba(128, 128, 128, .6);
 		color: #fff;
 	}
 	.camera {

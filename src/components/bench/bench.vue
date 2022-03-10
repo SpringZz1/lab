@@ -236,6 +236,8 @@ export default {
                     console.log(res.data.data);
                     this.benchList = res.data.data;
                     this.total = res.data.data.length;
+                    // 将当前页码设置为1， 很重要，找了很久
+                    this.pageNum = 1;
                 }
             })
         },

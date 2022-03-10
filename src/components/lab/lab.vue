@@ -137,12 +137,14 @@ export default {
         getLabList(){
             this.$http.get(`/admin/lab/list`)
             .then(res=>{
+                console.log(res);
                 if(res.data.code!==200){
                     this.$message.error('获取实验室信息失败');
                 }else{
                     console.log(res);
                     this.$message.success('获取实验室信息成功');
                      this.labList = res.data.data;
+                     console.log(this.labList);
                      this.total = parseInt(res.data.data.length);
                 }
             })

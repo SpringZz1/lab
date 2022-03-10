@@ -3,6 +3,7 @@
 	<uni-card 
 		title="实验室信息"
 		:is-shadow="true" 
+		style="margin: 0 auto; text-align: center;"
 	>
 		<view v-if="feedbackList">
 			<p>实验室: {{feedbackList.labName}}</p>
@@ -10,13 +11,13 @@
 			<p>课程: {{feedbackList.couName}}</p>
 		</view>
 		<view class="image-box">
-			<image :src="feedbackList.photo" mode=""></image>
+			<image :src="feedbackList.photo" class="img-box" @click="previewImg"></image>
 		</view>
 	</uni-card>
 	
 	<uni-card
 	title="学生信息"
-	
+	style="text-align: center;"
 	>
 	<view v-if="feedbackList">
 		<p>学号: {{feedbackList.stuId}}</p>
@@ -248,16 +249,30 @@
 								duration:2000
 							})
 							// 跳转到上一个页面
-							uni.navigateBack({
-								// 回到上一个页面
-								success: function(){
-									beforePage.onLoad(self.inputReceive);
-								}
-							})
+							setTimeout(function(){
+								uni.navigateBack({
+									// 回到上一个页面
+									success: function(){
+										beforePage.onLoad(self.inputReceive);
+									}
+								})
+							},2000)
+
 						}
 						
 					}
 				})
+			},
+			// 图片预览功能
+			previewImg(){
+				let imgArr = [];
+				console.log('here');
+				imgArr = this.feedbackList.photo;
+				console.log(imgArr[0]);
+				uni.previewImage({
+					current:0,
+					urls: imgArr
+				});
 			}
 		},
 		onLoad(e) {
@@ -281,13 +296,14 @@
 		height: auto;
 		margin-bottom: 5%;
 	}
-	.container{
+/* 	.container{
 		width: 100%;
 		height: 100%;
-	}
+	} */
 	.image-box{
-		background-position: center center;
-		 background-size: cover;
-		 background-repeat: no-repeat;
+		/* background-position: center center; */
+		 /* background-size: cover; */
+		 /* background-repeat: no-repeat; */
+		 margin: 0 auto;
 	}
 </style>

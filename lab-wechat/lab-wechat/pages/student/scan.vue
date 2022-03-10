@@ -22,7 +22,7 @@
 			jump(){
 				uni.navigateTo({
 					// url: '../student/labInfo?labId=' + '1' + '&benchId=' + '1'
-					url: './labInfo?labId=' + '1' + '&benchId=' + '1'
+					url: './labInfo?labId=' + '1' + '&benchId=' + '3'
 				})
 			},
 			

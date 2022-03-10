@@ -22,7 +22,7 @@
 			data(){
 				return{
 					baseURL:'',
-					// 获得实验台相关信息, 这里使用暂时假数据
+					// 获得实验台相关信息
 					benchList:
 					{
 						// 实验桌编号
@@ -56,6 +56,8 @@
 						method:'POST',
 						success: res => {
 							console.log(res);
+							 // 停止下拉样式
+							uni.stopPullDownRefresh();
 							this.benchList = res.data.data;
 							this.benchDetail = res.data.detail;
 							// this.benchList.benchId = res.data.detail.benchId;
@@ -82,16 +84,22 @@
 						+ couId + '&benchName=' + this.benchDetail.benchName + '&labName=' + this.benchDetail.labName 
 						+ '&week=' + week + '&courseTime=' + courseTime + '&couName=' + couName
 					})
-				}
+				},
 			},
 			onLoad(e){
 				this.baseURL = getApp().globalData.baseURL;
 				// console.log(e);
-				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息, 先写死测试
+				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息
 				this.inputReceive.labId = e.labId;
 				this.inputReceive.benchId = e.benchId;
 				// this.inputReceive.labId = e.labId;
 				// this.inputReceive.bencId = e.bencId;
+				this.getBenchList();
+			},
+			onPullDownRefresh(){
+				this.baseURL = getApp().globalData.baseURL;
+				// this.inputReceive.labId = e.labId;
+				// this.inputReceive.benchId = e.benchId;
 				this.getBenchList();
 			}
 		}

@@ -74,6 +74,7 @@
 					// url: self.baseURL + 'bench/searchByLabId/' + '1',
 					method:'GET',
 					success: res => {
+						
 						console.log(res);
 						// this.benchList = res.data.data;
 						// self.labId = res.data.data[0].labId;
@@ -106,6 +107,7 @@
 						self.benchList.photo.urls = data;
 						self.benchList.photo.benchId = bench;
 						self.benchList.photo.status = status;
+						uni.stopPullDownRefresh();
 						console.log(self.benchList);
 						// console.log('111');
 						// console.log(self.benchList.photo.urls);
@@ -141,6 +143,10 @@
 			this.benchList.labId = e.labId;
 			// console.log(this.benchList.labId);
 			this.getBenchList();
+		},
+		onPullDownRefresh(){
+			this.baseURL = getApp().globalData.baseURL;
+			this.getBenchList();
 		}
 	}
 </script>
@@ -162,24 +168,30 @@
 		margin-left: 50rpx;
 		margin-top: 50rpx;
 		float: left;
-		border: 1.5px solid green;
-		width: 300rpx;
-		height: 300rpx;
+		border: 3px solid green;
+/* 		width: 300rpx;
+		height: 300rpx; */
+		width:20vw;
+		height: 30vw;
 	}
 	.red{
 		margin-left: 50rpx;
 		margin-top: 50rpx;
 		float: left;
-		border: 1.5px solid red;
-		width: 300rpx;
-		height: 300rpx;
+		border: 3px solid red;
+/* 		width: 300rpx;
+		height: 300rpx; */
+		width:20vw;
+		height: 30vw;
 	}
 	.orange{
 		margin-left: 50rpx;
 		margin-top: 50rpx;
 		float: left;
-		border: 1.5px solid orange;
-		width: 300rpx;
-		height: 300rpx;
+		border: 3px solid orange;
+/* 		width: 300rpx;
+		height: 300rpx; */
+		width:20vw;
+		height: 30vw;
 	}
 </style>

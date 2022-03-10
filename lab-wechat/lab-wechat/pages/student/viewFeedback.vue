@@ -4,15 +4,17 @@
 		<uni-card  
 		title="照片"
 		is-full="true" 
+		style="text-align: center;"
 		>
 			<view class= "imagePart" v-if="feedbackList">
-				<image :src="feedbackList.photo" ></image>
+				<image :class="feedbackList.status == 1? 'green':'red'" :src="feedbackList.photo" @click="previewImg"></image>
 			</view>
 			
 		</uni-card>
 		<uni-card 
 		title="信息"
-		is-full="true" >
+		is-full="true" 
+		style="text-align: center;">
 			<view class="container" v-if="feedbackList">
 				<p>实验室号: {{feedbackList.labName}}</p>
 				<p>实验台号: {{feedbackList.benchName}}</p>
@@ -88,6 +90,7 @@
 							// console.log(res.data.data[i].photo);
 							// this.feedbackList.photo = res.data.data.photo;
 							self.feedbackList = '';
+							uni.stopPullDownRefresh();
 							uni.showToast({
 								title:'此实验桌暂无拍照信息，请先完成扫码拍照',
 								icon:'none',
@@ -102,6 +105,20 @@
 								})
 							},2000);
 
+						}else if(res.data.data.comment == null){
+							// 如果教师还没反馈信息
+							uni.showToast({
+								title:'请等待教师反馈信息后再来查看',
+								icon:'none',
+								duration:2000
+							});
+							// 设置延迟跳转
+							setTimeout(function(){
+								uni.navigateBack({
+									success: function(){}
+								})
+							})
+							
 						}else{
 							// 图片链接格式转换
 							res.data.data.photo = res.data.data.photo + '';
@@ -113,6 +130,7 @@
 							this.feedbackList.photo = this.baseURL + res.data.data.photo;
 							// this.imgURL = this.baseURL + res.data.data.photo;
 							this.imgURL = res.data.data.photo;
+							uni.stopPullDownRefresh();
 							console.log(this.imgURL);
 						}
 						
@@ -128,6 +146,18 @@
 				uni.navigateBack({
 					delta:1
 				})
+			},
+			// 图片预览功能
+			previewImg(){
+				let imgArr = [];
+				// console.log('here');
+				imgArr = this.feedbackList.photo.split(' ');
+				console.log(imgArr);
+				// console.log(imgArr[0]);
+				uni.previewImage({
+					current:0,
+					urls: imgArr
+				});
 			}
 		},
 		onLoad(e) {
@@ -151,18 +181,40 @@
 			// console.log(this.feedbackList.benchId);
 			// console.log(this.feedbackList.labId);
 			this.getFeedbackList();
+		},
+		onPullDownRefresh(){
+			this.baseURL = getApp().globalData.baseURL;
+			this.getFeedbackList();
 		}
 	}
 </script>
 
 <style>
 	.imagePart{
-		height: 40%;
-		width: 100%;
+/* 		height: 40%;
+		width: 80%; */
+		/* 设置图片居中显示 */
+/* 		 display: flex;
+		 justify-content: center;
+		 align-items: center; */
+		/* background-position:50% 50% ; */
+		margin: 0 auto;
 		/* border: 1px solid red; */
 		/* background-color: red; */
 	}
 	.btn{
 		text-align: center;
+	}
+	.green{
+		border: 3px solid green;
+		/* background-position:50% 50% ; */
+		margin: 0 auto;
+		margin-left: 10rpx;
+	}
+	.red{
+		border: 3px solid red;
+		/* background-position:50% 50% ; */
+		margin: 0 auto;
+		margin-left: 10rpx;
 	}
 </style>

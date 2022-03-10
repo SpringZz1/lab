@@ -191,14 +191,19 @@ export default {
             })
         },
         searchStudent(){
+            // var self =this;
             this.$http.post(`/admin/student/selectByparam`, this.searchInput)
             .then(res=>{
                 if(res.data.data.length==0){
-                    this.$message.error('不存在该学生');
+                    self.$message.error('不存在该学生');
                 }else{
                     this.$message.success('查询学生成功');
                     this.studentList = res.data.data;
+                    console.log('查询结果');
+                    console.log(this.studentList);
                     this.total = res.data.data.length;
+                    // 将当前页码设置为1， 很重要，找了很久的错误
+                    this.pageNum = 1;
                 }
             })
         }

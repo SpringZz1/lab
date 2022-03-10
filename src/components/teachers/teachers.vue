@@ -244,7 +244,7 @@ export default {
         },
         // 当前页码发生变化的时候触发
         CurrentChange(newNum){
-            // console.log(`当前页码 {$newNum} 页`);
+            console.log(`当前页码 ${newNum} 页`);
             this.pageNum = newNum;
             // this.getTeacherList();
         },
@@ -275,6 +275,9 @@ export default {
                     this.$message.success('查询教师成功');
                     this.list = res.data.data;
                     this.total = res.data.data.length;
+                    // 将当前页码设置为1， 很重要，找了很久的错误
+                    this.pageNum = 1;
+
                 }
             })
         },
