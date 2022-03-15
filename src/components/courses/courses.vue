@@ -125,7 +125,7 @@
                 </el-col>
                 <el-col :span="12">
                     <!-- 星期几选择，使用下拉框 -->
-                    <el-select v-model="addCourseList.week" filterable placeholder="星期">
+                    <el-select v-model="addCourseList.week" filterable placeholder="星期" >
                         <el-option
                             v-for="item in this.week"
                             :key="item"
