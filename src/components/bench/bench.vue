@@ -233,9 +233,13 @@ export default {
                 }else{
                     // console.log(res);
                     this.$message.success('查找成功');
+                    console.log('1111');
                     console.log(res.data.data);
+                    // console.log('1111');
                     this.benchList = res.data.data;
                     this.total = res.data.data.length;
+                    this.benchList.labName = res.data.labName;
+                    console.log(this.benchList.labName);
                     // 将当前页码设置为1， 很重要，找了很久
                     this.pageNum = 1;
                 }
