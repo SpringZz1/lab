@@ -35,12 +35,13 @@
         align="center"
         >
         <template slot-scope="scope" >
+            <span>{{scope.row.teacherName}}</span>
             <!-- <span v-for="i in element">{{i}} </span> -->
             <!-- <span v-for="i in scope.row.teacherName">{{i}}</span> -->
             <!-- <span >{{scope.row.teacherName}}</span> -->
-            <!-- <span>{{index}}</span> -->
+
             <!-- <span>{{scope.row.teacherName}}</span> -->
-            <span v-for="i in scope.row.teacherName">{{i}}</span>
+            <!-- <span v-for="i in scope.row.teacherName">{{i}}</span> -->
         </template>
         </el-table-column>
         <el-table-column
@@ -309,13 +310,13 @@ export default {
                     this.$message.success('获取实验室信息成功');
                     this.labList = res.data.data;
                     console.log('1111');
+                    // let data = [];
                     //  console.log(this.labList);
                     // console.log(this.labList[0].teacherName);
-                    let data = [];
-                    let temp = [];
                     for(let i = 0; i< res.data.data.length; i++){
-                        data.push(eval(this.labList[i].teacherName));
-                        temp.push(this.labList[i].teacherName);
+                        // data.push(eval(this.labList[i].teacherName));
+                        this.labList[i].teacherName = this.labList[i].teacherName.replace(/\[|]/g, '' ).replace(/\"/g, "");
+                        // temp.push(this.labList[i].teacherName);
                     }
                     // console.log(res.data.data.length);
                     // data = eval(this.labList[0].teacherName);
@@ -323,14 +324,10 @@ export default {
                     // data = eval(data);
                     // console.log(data);
                     console.log('222');
-                    console.log(temp);
-                    // this.labList.teacherName = data;
-                    this.labList.teacherName = temp;
-                    console.log(this.labList.teacherName);
-                    // console.log(this.labList.teacherName[1][0]);
-                    // this.labList.teacherName = eval(data);
-                    // console.log(this.labList.teacherName);
                     this.total = parseInt(res.data.data.length);
+                    // let temp = this.labList[0].teacherName.replace(/\[|]/g, '' )
+                    // console.log(temp);
+                    console.log(this.labList);
                 }
             })
 

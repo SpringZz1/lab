@@ -10,7 +10,7 @@
 				// 保存临时code，用于换取openId
 				loginForm:{
 					code:'',
-					openId:'123'
+					openId:''
 				}
 			}
 		},
@@ -34,6 +34,7 @@
 							},
 							success: res => {
 								console.log(res);
+								// console.log(loginRes.code);
 								// 没有注册的教师账号
 								if(res.data.code == 108){
 									console.log('没有注册，进入注册界面');

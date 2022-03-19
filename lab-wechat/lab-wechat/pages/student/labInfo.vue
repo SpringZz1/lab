@@ -90,6 +90,7 @@
 				this.baseURL = getApp().globalData.baseURL;
 				// console.log(e);
 				// 这里从扫码二维码获得labId, bencId然后发送请求获得这个实验桌的信息
+				console.log(e);
 				this.inputReceive.labId = e.labId;
 				this.inputReceive.benchId = e.benchId;
 				// this.inputReceive.labId = e.labId;

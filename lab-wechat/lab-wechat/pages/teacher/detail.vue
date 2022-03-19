@@ -171,8 +171,8 @@
 		border: 3px solid green;
 /* 		width: 300rpx;
 		height: 300rpx; */
-		width:20vw;
-		height: 30vw;
+		width:40vw;
+		height: 50vw;
 	}
 	.red{
 		margin-left: 50rpx;
@@ -181,8 +181,8 @@
 		border: 3px solid red;
 /* 		width: 300rpx;
 		height: 300rpx; */
-		width:20vw;
-		height: 30vw;
+		width:40vw;
+		height: 50vw;
 	}
 	.orange{
 		margin-left: 50rpx;
@@ -191,7 +191,7 @@
 		border: 3px solid orange;
 /* 		width: 300rpx;
 		height: 300rpx; */
-		width:20vw;
-		height: 30vw;
+		width:40vw;
+		height: 50vw;
 	}
 </style>

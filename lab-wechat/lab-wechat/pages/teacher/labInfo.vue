@@ -80,6 +80,7 @@
 			{
 				// 获得接口的前缀
 				this.baseURL = getApp().globalData.baseURL;
+				console.log(e);
 				// 保存上个页面传送的教师id
 				this.labList.id = e.id;
 				this.id = e.id;

@@ -116,9 +116,9 @@
 								// 如果是未注册的学生
 								if(res.data.code==109){
 									self.formData = self.receiveInput;
-									self.formData.name = res.data.data.name;
-									self.formData.stuId = res.data.data.stuId;
-									self.formData.className = res.data.data.className;
+									// self.formData.name = res.data.data.name;
+									// self.formData.stuId = res.data.data.stuId;
+									// self.formData.className = res.data.data.className;
 									self.formData.firstLogin = 1;
 									console.log(self.formData);
 									console.log('未注册');

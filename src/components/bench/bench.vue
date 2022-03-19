@@ -51,9 +51,12 @@
             align="center">
             </el-table-column>
             <el-table-column
-            prop="labName"
+            prop="this.benchList.labName"
             label="所属实验室"
             align="center">
+            <template>
+                {{this.benchList.labName}}
+            </template>
             </el-table-column>
             <el-table-column
                 prop=""
@@ -194,8 +197,10 @@ export default {
                 if(res.data.code!==200){
                     this.$message.error('获取所有实验桌数据失败')
                 }else{
+                    // console.log(res.data);
                     this.$message.success('获取所有实验桌信息成功')
                      this.benchList = res.data.data;
+                    //  this.benchList.labName = res.data
                      this.total = res.data.data.length;
                      console.log(this.benchList);
                 }
@@ -234,7 +239,8 @@ export default {
                     // console.log(res);
                     this.$message.success('查找成功');
                     console.log('1111');
-                    console.log(res.data.data);
+                    // console.log(res.data.labName);
+                    // console.log(res.data.data.labName);
                     // console.log('1111');
                     this.benchList = res.data.data;
                     this.total = res.data.data.length;
