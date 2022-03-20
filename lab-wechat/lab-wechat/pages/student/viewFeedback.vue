@@ -75,17 +75,24 @@
 
 				},
 				imgURL:'',
+				inputReceive:{
+					// 接收上个页面传送来的labId
+					labId:'',
+					//接收上个页面传送来的benchId
+					benchId:''
+				}
 			}
 		},
 		methods:{
 			// 发送请求获得反馈信息
 			getFeedbackList(){
+				let self = this;
 				uni.request({
-					url: this.baseURL + 'student/getFeedback',
+					url: self.baseURL + 'student/getFeedback',
 					data:{
-						labId: this.feedbackList.labId,
-						benchId: this.feedbackList.benchId,
-						couId: this.feedbackList.couId
+						labId: self.feedbackList.labId,
+						benchId: self.feedbackList.benchId,
+						couId: self.feedbackList.couId
 						// labId: 1,
 						// benchId: 1,
 						// couId: 110
@@ -97,23 +104,35 @@
 						console.log(res.data);
 					// 这个地方卡了我1小时，最终解决，记录一下，原来是res.data.data为null，完全没有photo这个属性，强行访问就一直报错	
 						if(res.data.data == null){
-							// res.data.data.photo = 'img/df12091d-d27-2022-03-03-19-27-53.png';
-							// console.log(res.data.data[i].photo);
-							// this.feedbackList.photo = res.data.data.photo;
-							this.feedbackList = '';
-							console.log(this.feedbackList);
+							console.log('2222');
+							console.log(self.inputReceive);
+							self.feedbackList = '';
+							uni.showToast({
+								title:'请先提交照片，再查看教师反馈',
+								icon:'none',
+								duration:2000
+							});
+							setTimeout(function(){
+								uni.redirectTo({
+									url:'./labInfo?labId=' + self.inputReceive.labId + '&benchId=' + self.inputReceive.benchId
+									// url:'./labInfo?labId=' + '104' + '&benchId=' + '27'
+								})
+							},2000);
+							console.log(self.feedbackList);
 						}else{
 							// 图片链接格式转换
 							res.data.data.photo = res.data.data.photo + '';
 							// 替换好之后传给data,得到的格式为: http://124.222.93.17:8080/img/df12091d-d27-2022-03-03-19-27-53.png
 							res.data.data.photo = res.data.data.photo.replace('/root/elab/images/', 'img/');
 							// console.log(str);
-							this.feedbackList = res.data.data;
-							
-							this.feedbackList.photo = this.baseURL + res.data.data.photo;
+							self.feedbackList = res.data.data;
+							if(self.feedbackList.feedback==null){
+								self.feedbackList.feedback = '';
+							}
+							self.feedbackList.photo = self.baseURL + res.data.data.photo;
 							// this.imgURL = this.baseURL + res.data.data.photo;
-							this.imgURL = res.data.data.photo;
-							console.log(this.imgURL);
+							self.imgURL = res.data.data.photo;
+							// console.log(this.imgURL);
 						}
 						
 					},
@@ -131,8 +150,11 @@
 			}
 		},
 		onLoad(e) {
-			// console.log(e);
+			console.log(e);
 			this.baseURL = getApp().globalData.baseURL;
+			this.inputReceive = e;
+			console.log('1111');
+			console.log(this.inputReceive);
 			// this.feedbackList.labId = e.labId;
 			// this.feedbackList.benchId = e.benchId;
 			// // console.log(e.benchId);

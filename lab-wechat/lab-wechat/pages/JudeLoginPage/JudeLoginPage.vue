@@ -34,20 +34,22 @@
 							},
 							success: res => {
 								console.log(res);
-								// console.log(loginRes.code);
+								console.log(loginRes.code);
 								// 没有注册的教师账号
 								if(res.data.code == 108){
 									console.log('没有注册，进入注册界面');
 									uni.reLaunch({
 										url:'/pages/teacher/register'
 									})
-								}else{
+								}else if(res.data.code!==105){
 									console.log('进入实验室信息查看界面');
 									// uni.redirectTo 关闭当前页面，跳转到应用内的某个页面
 									uni.redirectTo({
 										// 传参进入查看实验室信息页面，只查看这个教师自己管理的实验室信息
 										url:'/pages/teacher/labInfo?id='+res.data.data.id
 									})
+								}else{
+									console.log('微信授权码错误');
 								}
 							}
 						})

@@ -112,7 +112,8 @@
 							},
 							method:'POST',
 							success: res => {
-								// console.log(res);
+								console.log('2222');
+								console.log(res);
 								// 如果是未注册的学生
 								if(res.data.code==109){
 									self.formData = self.receiveInput;
@@ -238,6 +239,7 @@
 			this.baseURL = getApp().globalData.baseURL;
 			console.log(e);
 			this.receiveInput = e;
+			console.log(this.receiveInput);
 			// this.formData = e;
 			
 			console.log('1111');

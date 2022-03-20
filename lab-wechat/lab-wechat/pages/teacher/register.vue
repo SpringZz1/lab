@@ -9,8 +9,9 @@
 		<uni-tag text="提交" @click="bindClick"></uni-tag>
 	</view> -->
 	<div style="margin-top: 2%;">
-		<uni-tag text="返回" type="primary" style="float: left; margin-left: 20%;"></uni-tag>
-		<uni-tag text="确认" type="success" size="default"style="float: right; margin-right: 20%;" @click="getUserInfo"></uni-tag>
+		<!-- <uni-tag text="返回" type="primary" style="float: left; margin-left: 20%;"></uni-tag> -->
+		<!-- <uni-tag text="确认" type="success" size="normal" @click="getUserInfo"></uni-tag>-->
+		<button type="primary" @click="getUserInfo">确认</button>
 	</div>
 	</view>
 </template>
