@@ -94,7 +94,7 @@
 
         <!-- 分配实验室弹窗 -->
     <el-dialog
-        title="分配实验室"
+        title="添加课程"
         :visible.sync="addCourseVisible"
         width="50%"
         >
@@ -104,9 +104,20 @@
                     <!-- 课程名使用输入框输入 -->
                     <el-input v-model="addCourseList.name" placeholder="请输入课程名" style="width:60%"></el-input>
                 </el-col>
-                <el-col :span="12">
+                <!-- <el-col :span="12"> -->
                     <!-- 课程时间用输入框输入 -->
-                    <el-input v-model="addCourseList.courseTime" placeholder="课程时间，例: 第1-2节" style="width:60%"></el-input>
+                    <!-- <el-input v-model="addCourseList.courseTime" placeholder="课程时间，例: 第1-2节" style="width:60%"></el-input>
+                </el-col> -->
+                <el-col :span="12">
+                    <!-- 课程时间使用下拉框输入 -->
+                    <el-select v-model="addCourseList.courseTime" filterable placeholder="课程时间">
+                        <el-option
+                        v-for="time in this.courseTime"
+                        :key="time"
+                        :label="time"
+                        :value="time">
+                        </el-option>
+                    </el-select>
                 </el-col>
             </el-row>
             <el-row >
@@ -171,6 +182,7 @@ export default {
             },
             // 添加课程时使用
             week:['星期一','星期二','星期三','星期四','星期五','星期六','星期日'],
+            courseTime:['第1-2节','第3-4节','第5-6节','第7-8节','第9-10节','第11-12节'],
             // 课程列表
             labList:[],
             // 添加课程显示/隐藏

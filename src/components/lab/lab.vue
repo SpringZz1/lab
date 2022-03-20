@@ -100,9 +100,9 @@
             <el-form-item label="实验室简介" prop="comment">
                 <el-input v-model="addLabList.comment" clearable></el-input>
             </el-form-item>
-            <el-form-item label="实验桌数量" prop="benchNum">
+            <!-- <el-form-item label="实验桌数量" prop="benchNum">
                 <el-input-number v-model="addLabList.benchNum"  :min="0" :max="30" label="选择实验桌数量"></el-input-number>
-            </el-form-item>
+            </el-form-item> -->
 
         </el-form>
 
@@ -169,7 +169,7 @@
     </el-dialog> -->
     <!-- 批量添加实验室弹窗 -->
     <el-dialog
-        title="批量添加实验室"
+        title="批量添加实验桌"
         :visible.sync="bulkAddVisible"
         width="30%"
         >
